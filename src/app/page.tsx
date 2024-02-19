@@ -8,7 +8,7 @@ import axios from "axios";
 export default async function UserPage() {
   const organizedData = {} as any;
   const { data } = await axios.get(
-    "http://192.168.0.189:6600/api/v1/activities"
+    "https://cpxrkdz4-6600.inc1.devtunnels.ms/api/v1/activities"
   );
 
   data.data.forEach((item: any) => {
@@ -17,7 +17,6 @@ export default async function UserPage() {
     }
     organizedData[item.category].push(item);
   });
-  console.log(organizedData);
 
   return (
     <>

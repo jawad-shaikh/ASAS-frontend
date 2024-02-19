@@ -17,6 +17,8 @@ export const providerAccountFormSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
   password: z.string().min(6, { message: 'Password must be at least 6 characters long' }),
   website: z.string().optional(),
+  phoneNumber: z.string().optional(),
+
 });
 
 export const createUserSchema = z.object({
@@ -55,4 +57,23 @@ export const childSchema = z.object({
               .optional(),
       })
   ),
+});
+
+export const activityFormSchema = z.object({
+  title: z.string().min(2).max(50),
+  description: z.string().min(5),
+  category: z.string(),
+  capacity: z.number().min(1),
+  ageRangeStart: z.number().min(0),
+  ageRangeEnd: z.number().min(0),
+  activityStartDate: z.string(),
+  activityEndDate: z.string(),
+  activityStartTime: z.string(),
+  activityEndTime: z.string(),
+  singleSessionPrice: z.number().min(0).optional(),
+  fullCoursePrice: z.number().min(0).optional(),
+  formattedAddress: z.string().min(5).max(100),
+  thumbnail: z.string().optional(),
+  isSingleSession: z.boolean(),
+  isFullCourse: z.boolean(),
 });

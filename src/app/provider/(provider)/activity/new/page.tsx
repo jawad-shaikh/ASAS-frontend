@@ -1,79 +1,79 @@
 "use client";
-import { createActivity, createOrders } from "@/api";
+import { createActivity } from "@/api";
 import TableHeader from "@/components/TableHeader";
 import Button from "@/components/common/Button";
 import FormInput from "@/components/common/FormInput";
-import { providerAccountFormSchema } from "@/validations";
-import { zodResolver } from "@hookform/resolvers/zod";
-// import { Autocomplete, useLoadScript } from "@react-google-maps/api";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { z } from "zod";
 
-type FormValues = z.infer<typeof providerAccountFormSchema>;
 
 const placesLibrary = ["places"];
 
 export default function NewActivityPage() {
+  const router= useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>();
+  } = useForm<any>();
 
-  //   const { isLoaded } = useLoadScript({
-  //     googleMapsApiKey: "GOOGLE_API_KEY",
-  //     libraries: placesLibrary,
-  //   });
+  const [isFullCourse, setIsFullCourse] = useState(false);
+  const [isSingleSession, setIsSingleSession] = useState(false);
 
-  //   const onLoad = () => {
-  //     const autocomplete = autocompleteRef.current;
-  //   };
 
-  //   const onPlaceChanged = (place) => {
-  //     setSearchResult(place);
-  //     console.log(searchResult);
-  //   };
-
-  const onSubmit = async (data: FormValues) => {
-    console.log(data);
+  const onSubmit = async (data: any) => {
     const loadingToastId = toast.loading("Operation in progress...");
     try {
       const formData = new FormData();
-      Object.entries(data).forEach(([key, value]) => {
+      for (const [key, value] of Object.entries(data)) {
         if (key === "activityStartTime" || key === "activityEndTime") {
           // Convert time to ISO string format
-          const [hours, minutes] = value.split(":");
+          const [hours, minutes] = (value as string).split(":");
           const today = new Date();
           today.setHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0);
           formData.append(key, today.toISOString());
         } else if (key === "activityStartDate" || key === "activityEndDate") {
           // Convert date to ISO string format
-          formData.append(key, new Date(value).toISOString());
+          formData.append(key, new Date(value as string).toISOString());
         } else if (key === "thumbnail") {
-          // Convert date to ISO string format
-          return;
+          // Append image file
+          formData.append("thumbnail", data.thumbnail[0]);
         } else {
-          formData.append(key, value);
+          formData.append(key, value?.toString() || "");
         }
-      });
-      formData.append("isFullCourse", "true");
-      formData.append("isSingleSession", "true");
-
-      // Append image file
-      formData.append("thumbnail", data.thumbnail[0]);
-
+      }
+  
+      formData.append("isFullCourse", isFullCourse.toString());
+      formData.append("isSingleSession", isSingleSession.toString());
+  
+      // Conditionally append fullCoursePrice and singleSessionPrice
+      if (!isFullCourse) {
+        formData.append("fullCoursePrice", "null");
+      } else {
+        formData.append("fullCoursePrice", data.fullCoursePrice.toString());
+      }
+  
+      if (!isSingleSession) {
+        formData.append("singleSessionPrice", "null");
+      } else {
+        formData.append("singleSessionPrice", data.singleSessionPrice.toString());
+      }
+  
       const response = await createActivity(formData);
       toast.success(response.data.message, { id: loadingToastId });
+      router.push('/provider/activity/')
     } catch (error: any) {
       // An error occurred during registration
       console.error("An error occurred during registration:", error);
-      toast.error(error.response.data.error, {
+      toast.error(error.response?.data?.error || "An error occurred", {
         id: loadingToastId,
       });
     }
   };
+  
+  
 
   return (
     <div className="px-8">
@@ -99,7 +99,7 @@ export default function NewActivityPage() {
           />
           <select
             id="category"
-            className={`block bg-transparent border-b w-full pb-2 outline-none mt-7`}
+            className={`mt-7 block bg-transparent border-b w-full pb-2 outline-none ${errors['category'] ? "border-red-500" : "border-border"}`}
             {...register("category")}
           >
             <option value="MUSIC" selected>
@@ -176,21 +176,48 @@ export default function NewActivityPage() {
             />
           </div>
 
-          <div className="flex items-center gap-4">
-            <FormInput
-              label={"Single Session Price"}
-              placeholder="Single Session Price"
-              register={register}
-              name={"singleSessionPrice"}
-              errors={errors}
-            />
-            <FormInput
-              label={"Full Course Price"}
-              placeholder="Full Course Price"
-              register={register}
-              name={"fullCoursePrice"}
-              errors={errors}
-            />
+          <div className="flex items-start gap-4">
+            <div className="mt-4">
+              <div className="checkboxes__item">
+                <label className="checkbox style-c">
+                  <input type="checkbox"
+                    checked={isSingleSession}
+                    onChange={() => setIsSingleSession(!isSingleSession)} />
+                  <div className="checkbox__checkmark"></div>
+                  <div className="text-sm">Is Single Session</div>
+                </label>
+              </div>
+              {isSingleSession ? <FormInput
+                label={"Single Session Price"}
+                placeholder="Single Session Price"
+                register={register}
+                name={"singleSessionPrice"}
+                errors={errors}
+              />
+                : null}
+            </div>
+
+            <div className="mt-4">
+              <div className="checkboxes__item">
+                <label className="checkbox style-c">
+                  <input type="checkbox"
+                    checked={isFullCourse}
+                    onChange={() => setIsFullCourse(!isFullCourse)} />
+                  <div className="checkbox__checkmark"></div>
+                  <div className="text-sm">Is Full Course</div>
+                </label>
+              </div>
+              {
+                isFullCourse ? <FormInput
+                  label={"Full Course Price"}
+                  placeholder="Full Course Price"
+                  register={register}
+                  name={"fullCoursePrice"}
+                  errors={errors}
+                /> : null
+              }
+
+            </div>
           </div>
 
           <FormInput
@@ -209,9 +236,10 @@ export default function NewActivityPage() {
             name={"thumbnail"}
             errors={errors}
           />
-        </div>
-        <div className="mt-10 flex justify-end">
-          <Button size={"small"}>Save Changes</Button>
+
+          <div className="mt-10 flex justify-end">
+            <Button size={"small"}>Save Changes</Button>
+          </div>
         </div>
       </form>
     </div>

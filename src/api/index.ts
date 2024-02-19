@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from "axios";
 
 // Create Axios instance
 export const API: AxiosInstance = axios.create({
-  baseURL: "http://localhost:6600/api/v1",
+  baseURL: "https://cpxrkdz4-6600.inc1.devtunnels.ms/api/v1",
   timeout: 5000, // Adjust timeout as needed
 });
 
@@ -20,6 +20,11 @@ export const providerRegister = (data: any) =>
 export const adminLogin = (data: any) => API.post("/admins/auth/login", data);
 
 export const me = () => API.get("/parents/me");
+
+export const meProvider = () => API.get("/activity-providers/me");
+
+export const updateMeProvider = (data:any) => API.patch("/activity-providers/me", data);
+
 
 export const myChildren = () => API.get("/parents/children");
 
@@ -40,7 +45,15 @@ export const getAllOrders = () => API.get("/orders");
 
 export const createOrders = (data: any) => API.post("/orders", data);
 
+export const getActivity = (id: any) => API.get(`/activities/${Number(id)}`);
+
 export const createActivity = (data: any) => API.post("/activities", data);
+
+export const deleteActivity = (id: any) => API.delete(`/activities/${id}`);
+
+export const updateActivity = (id: any, data: any) => API.patch(`/activities/${id}`, data);
+
+
 
 export const getAllActivity = (id: number) =>
   API.get(`/activities?activityProviderId=${id}`);

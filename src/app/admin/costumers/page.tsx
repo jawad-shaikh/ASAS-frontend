@@ -1,6 +1,8 @@
 'use client'
 import { getAllParents } from "@/api";
 import TableHeader from "@/components/TableHeader";
+import ModalWrapper from "@/components/common/ModalWrapper";
+import NestedTable from "@/components/common/NestedTable";
 import Table from "@/components/common/Table";
 import { createColumnHelper } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
@@ -8,9 +10,11 @@ import { useEffect, useState } from "react";
 const columnHelper = createColumnHelper<any>();
 
 export default function CostumersPage() {
+  const [attendees, setAttendees] = useState<any>([]);
+  const [attendeesView, setAttendeesView] = useState(false);
 
   const [table, setTable] = useState([
-    
+
   ]);
 
   const columns = [
@@ -18,13 +22,12 @@ export default function CostumersPage() {
       cell: (info) => info.getValue().toString(),
       header: () => "No",
     }),
-    columnHelper.accessor("title",{
+    columnHelper.accessor("title", {
       header: () => "Full Name",
       cell: (props) => (
         <div className="flex items-center justify-start gap-4">
           <img src={'https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg'} height={30} width={30} className="rounded-full" alt={props.row.original.fullName} />
-        <p>{props.row.original.fullName}</p>
-          
+          <p>{props.row.original.fullName}</p>
         </div>
       ),
     }),
@@ -60,13 +63,53 @@ export default function CostumersPage() {
         header: "Zip Code",
       }
     ),
+    columnHelper.display({
+      id: "action",
+      header: () => "Action",
+      cell: (props) => (
+        <div>
+          <button
+            className="bg-primary text-white px-8 py-2 rounded-full inline-flex"
+            onClick={() => {
+              setAttendees(props.row.original.OrderAttendees)
+              setAttendeesView(true)
+            }}
+          >
+            View Child
+          </button>
+
+        </div>
+      ),
+    }),
   ];
 
-  const getData  = async () => {
-    const {data} = await getAllParents();
+
+  const columnsAttendees = [
+    columnHelper.accessor("id", {
+      cell: (info) => info.getValue().toString(),
+      header: () => "No",
+    }),
+    columnHelper.accessor(
+      (row) => (row.child ? `${row.child.fullName}` : "-"),
+      {
+        id: "name",
+        header: "Name",
+      }
+    ),
+    columnHelper.accessor(
+      (row) => (row.child ? `${new Date(row.child.birthDay).toLocaleDateString()}` : "-"),
+      {
+        id: "birthDay",
+        header: "Birth Day",
+      }
+    ),
+  ];
+
+  const getData = async () => {
+    const { data } = await getAllParents();
     setTable(data.data)
   }
-  
+
   useEffect(() => {
     getData()
   }, []);
@@ -75,6 +118,10 @@ export default function CostumersPage() {
     <div className="px-8">
       <TableHeader title="List of Costumers" />
       <Table data={table} columns={columns} />
+
+      <ModalWrapper open={attendeesView} setOpen={setAttendeesView}>
+          <NestedTable data={attendees} columns={columnsAttendees} />
+        </ModalWrapper>
     </div>
   );
 }

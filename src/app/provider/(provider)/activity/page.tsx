@@ -1,18 +1,21 @@
 'use client'
-import { getAllActivity, getAllParents } from "@/api";
+import { deleteActivity, getAllActivity, getAllParents } from "@/api";
 import TableHeader from "@/components/TableHeader";
 import Button from "@/components/common/Button";
 import Table from "@/components/common/Table";
 import useAuthStore from "@/store";
 import { createColumnHelper } from "@tanstack/react-table";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const columnHelper = createColumnHelper<any>();
 
 export default function ActivityPage() {
-  const {user} = useAuthStore();
+  const router = useRouter()
+  const { user } = useAuthStore();
   const [table, setTable] = useState([
-    
+
   ]);
 
   const columns = [
@@ -46,30 +49,59 @@ export default function ActivityPage() {
       }
     ),
     columnHelper.accessor(
-      (row) => (row.isFullCourse && `${(row.isFullCourse && row.isSingleSession) ? "Full Course / Single Session" : row.isSingleSession ? "Single Session" : "Full Course"}`),
+      (row) => (`${(row.isFullCourse && row.isSingleSession) ? "Full Course / Single Session" : !row.isFullCourse ? "Single Session" : "Full Course"}`),
       {
         id: "bookingOption",
         header: "Booking Option",
       }
     ),
+    columnHelper.display({
+      id: "action",
+      header: () => "Action",
+      cell: (props) => (
+        <div className="flex gap-2">
+          <button
+            className="border text-primary border-primary px-6 py-2 rounded-full inline-flex"
+            onClick={async () => {
+              try {
+                await deleteActivity(props.row.original.id)
+                toast.success("Activity Deleted")
+                getData()
+              } catch (error: any) {
+                toast.success(error.reponse.data.error)
+              }
+            }}
+          >
+            Delete
+          </button>
+
+          <button
+            className="bg-primary text-white px-6 py-2 rounded-full inline-flex"
+            onClick={() => router.push(`/provider/activity/${props.row.original.id}`)}
+          >
+            Edit
+          </button>
+        </div>
+      ),
+    }),
     // Add more columns as needed
   ];
 
-  const getData  = async () => {
-    const {data} = await getAllActivity(user?.userId || 0);
+  const getData = async () => {
+    const { data } = await getAllActivity(user?.userId || 0);
     console.log(data.data)
     setTable(data.data)
   }
-  
+
   useEffect(() => {
     getData()
   }, []);
-  
+
   return (
     <div className="px-8">
       <div className="flex items-center justify-between">
-      <TableHeader title="Your Activity" />
-      <Button size={"small"}>+ Add New Activity</Button>
+        <TableHeader title="Your Activity" />
+        <Button onClick={() => router.push('/provider/activity/new')} size={"small"}>+ Add New Activity</Button>
       </div>
 
       <Table data={table} columns={columns} />
