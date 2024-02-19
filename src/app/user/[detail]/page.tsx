@@ -6,11 +6,12 @@ import axios from "axios";
 import Image from "next/image";
 
 
-export default async function UserPage() {
-  const { data } = await axios.get('https://cpxrkdz4-6600.inc1.devtunnels.ms/api/v1/activities/1')
+export default async function UserPage({params}: any) {
+  const { data } = await axios.get(`https://cpxrkdz4-6600.inc1.devtunnels.ms/api/v1/activities/${params.detail}`)
   const { id, thumbnailPicture, title, capacity, averageRating, numberOfRatings, ActivityReview, ageRangeStart, ageRangeEnd, activityStartDate, activityEndDate, activityStartTime, activityEndTime,
     isFullCourse, isSingleSession, fullCoursePrice, singleSessionPrice } = data.data;
 
+    console.log(data.data)
   return (
     <main className="bg-light-gray relative py-20">
       <div className="container">

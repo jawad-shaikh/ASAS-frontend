@@ -23,8 +23,7 @@ export const me = () => API.get("/parents/me");
 
 export const meProvider = () => API.get("/activity-providers/me");
 
-export const updateMeProvider = (data:any) => API.patch("/activity-providers/me", data);
-
+export const updateMeProvider = (data: any) => API.patch("/activity-providers/me", data);
 
 export const myChildren = () => API.get("/parents/children");
 
@@ -44,6 +43,11 @@ export const getAllParents = () => API.get("/parents");
 export const getAllOrders = () => API.get("/orders");
 
 export const createOrders = (data: any) => API.post("/orders", data);
+
+export const approveOrder = (id: any) => API.post(`/orders/${id}/approve`);
+
+export const rejectOrder = (id: any) => API.post(`/orders/${id}/reject`);
+
 
 export const getActivity = (id: any) => API.get(`/activities/${Number(id)}`);
 

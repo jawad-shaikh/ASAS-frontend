@@ -67,18 +67,18 @@ export default function CostumersPage() {
       id: "action",
       header: () => "Action",
       cell: (props) => (
-        <div>
+        props.row.original.Child.length ? <div>
           <button
             className="bg-primary text-white px-8 py-2 rounded-full inline-flex"
             onClick={() => {
-              setAttendees(props.row.original.OrderAttendees)
+              setAttendees(props.row.original.Child)
               setAttendeesView(true)
             }}
           >
             View Child
           </button>
 
-        </div>
+        </div>: "-"
       ),
     }),
   ];
@@ -90,14 +90,14 @@ export default function CostumersPage() {
       header: () => "No",
     }),
     columnHelper.accessor(
-      (row) => (row.child ? `${row.child.fullName}` : "-"),
+      (row) => (`${row.fullName}`),
       {
         id: "name",
         header: "Name",
       }
     ),
     columnHelper.accessor(
-      (row) => (row.child ? `${new Date(row.child.birthDay).toLocaleDateString()}` : "-"),
+      (row) => (`${new Date(row.birthDay).toLocaleDateString()}`),
       {
         id: "birthDay",
         header: "Birth Day",
