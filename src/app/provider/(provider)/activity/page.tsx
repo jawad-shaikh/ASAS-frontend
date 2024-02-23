@@ -63,12 +63,13 @@ export default function ActivityPage() {
           <button
             className="border text-primary border-primary px-6 py-2 rounded-full inline-flex"
             onClick={async () => {
+              const id = toast.loading("Deleting activity")
               try {
                 await deleteActivity(props.row.original.id)
-                toast.success("Activity Deleted")
+                toast.success("Activity Deleted", {id})
                 getData()
               } catch (error: any) {
-                toast.success(error.reponse.data.error)
+                toast.error(error.response.data.error, {id})
               }
             }}
           >

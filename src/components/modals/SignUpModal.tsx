@@ -9,14 +9,14 @@ import Button from '../common/Button';
 import { parentRegister } from '@/api';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
-import useAuthStore from '@/store';
+import useAuthStore, { useModalStore } from '@/store';
 
 type FormValues = z.infer<typeof createUserSchema>;
 
 const SignUpModal = () => {
     const router = useRouter();
-    const {login} = useAuthStore();
-
+    const { login } = useAuthStore();
+    const { setSignInOpen, setSignUpOpen } = useModalStore()
     const {
         register,
         handleSubmit,
@@ -30,7 +30,7 @@ const SignUpModal = () => {
 
         try {
             const res = await parentRegister(data);
-            
+
             if (res.data && res.data.data.token && res.data.data.jwtPayload) {
                 login(res.data.data.token, res.data.data.jwtPayload);
                 console.log('Login successful');
@@ -40,7 +40,7 @@ const SignUpModal = () => {
                 // Registration failed
                 console.error('Registration failed:', res.data.message);
                 console.error('Token or user data not found in response');
-              }
+            }
         } catch (error: any) {
             // An error occurred during registration
             console.error('An error occurred during registration:', error);
@@ -85,7 +85,10 @@ const SignUpModal = () => {
 
             </div>
             <div className='mt-10'>
-                <p className='text-sm mb-4'>Already have an account? Log In</p>
+                <p className='text-sm mb-4 cursor-pointer' onClick={() => {
+                    setSignUpOpen(false)
+                    setSignInOpen(true)
+                }}>Already have an account? Log In</p>
                 <Button size={'large'}>
                     Create Account
                 </Button>

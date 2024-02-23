@@ -22,9 +22,7 @@ export default function ProfilePage() {
         handleSubmit,
         formState: { errors },
         setValue,
-    } = useForm<FormValues>({
-        resolver: zodResolver(providerAccountFormSchema),
-    });
+    } = useForm<FormValues>();
 
     const onSubmit = async (data: FormValues) => {
         const loadingToastId = toast.loading('Operation in progress...');
@@ -62,8 +60,8 @@ export default function ProfilePage() {
                 "firstName",
                 "lastName",
                 "businessName",
-                "email",
-                "password",
+                // "email",
+                // "password",
                 "website",
                 "phoneNumber",
                 // Add other keys as needed
@@ -106,7 +104,7 @@ export default function ProfilePage() {
                         name={"businessName"}
                         errors={errors}
                     />
-                    <FormInput
+                    {/* <FormInput
                         label={"Email Address"}
                         placeholder="Email Address"
                         register={register}
@@ -120,7 +118,7 @@ export default function ProfilePage() {
                         register={register}
                         name={"password"}
                         errors={errors}
-                    />
+                    /> */}
 
                     <FormInput
                         label={"Website"}

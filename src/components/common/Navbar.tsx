@@ -1,5 +1,4 @@
 const Navbar = ({ user }: any) => {
-  console.log(user);
   return (
     <header className="flex items-center justify-end py-4 px-6 gap-4 bg-white">
       {/* <ul className='flex items-center'>
@@ -21,7 +20,7 @@ const Navbar = ({ user }: any) => {
             </ul> */}
 
       <button className="border border-border rounded-2xl flex items-center gap-4 px-4 py-2">
-        {user.profilePicture ? (
+        {user?.profilePicture ? (
           <img
             src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg"
             height={30}
@@ -37,9 +36,9 @@ const Navbar = ({ user }: any) => {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="rounded-full"
           >
             <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
@@ -49,7 +48,7 @@ const Navbar = ({ user }: any) => {
 
         <div className="flex flex-col items-end">
           <p className="font-semibold">Hi, {user?.fullName}</p>
-          <p className="text-xs">{user?.role}</p>
+          <p className="text-xs">{user?.role === "ACTIVITY_PROVIDER" ? "PROVIDER" : user?.role}</p>
         </div>
         {/* <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M0 12H18V10H0V12ZM0 7H18V5H0V7ZM0 0V2H18V0H0Z" fill="black" />

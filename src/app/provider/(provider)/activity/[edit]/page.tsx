@@ -27,10 +27,10 @@ export default function NewActivityPage({ params}: any) {
     handleSubmit,
     formState: { errors },
     setValue
-  } = useForm<FormValues>();
+  } = useForm<any>();
 
 
-  const onSubmit = async (data: FormValues) => {
+  const onSubmit = async (data: any) => {
     const loadingToastId = toast.loading("Operation in progress...");
     try {
       const formData = new FormData();
@@ -51,8 +51,8 @@ export default function NewActivityPage({ params}: any) {
           formData.append(key, value);
         }
       });
-      formData.append("isFullCourse", "true");
-      formData.append("isSingleSession", "true");
+      formData.append("isFullCourse", isFullCourse);
+      formData.append("isSingleSession", isSingleSession);
 
       // Append image file
       if(data?.thumbnail?.length) formData.append("thumbnail", data?.thumbnail[0]);
@@ -96,6 +96,7 @@ export default function NewActivityPage({ params}: any) {
       ];
 
       keysToSet.forEach((key) => {
+        console.log(key, data[key])
         setValue(key, data[key]);
       });
 
@@ -127,7 +128,7 @@ export default function NewActivityPage({ params}: any) {
   return (
     <div className="px-8">
     <div className="flex justify-between items-center">
-      <TableHeader title="Add New Activity" />
+      <TableHeader title="Edit Activity" />
       {/* <Button onClick={() => setDisable(false)} size={"small"}>Edit Profile</Button> */}
     </div>
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">

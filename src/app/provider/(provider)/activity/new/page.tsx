@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 const placesLibrary = ["places"];
 
 export default function NewActivityPage() {
-  const router= useRouter();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -44,44 +44,43 @@ export default function NewActivityPage() {
           formData.append(key, value?.toString() || "");
         }
       }
-  
+
       formData.append("isFullCourse", isFullCourse.toString());
       formData.append("isSingleSession", isSingleSession.toString());
-  
+
       // Conditionally append fullCoursePrice and singleSessionPrice
       if (!isFullCourse) {
         formData.append("fullCoursePrice", "null");
       } else {
         formData.append("fullCoursePrice", data.fullCoursePrice.toString());
       }
-  
+
       if (!isSingleSession) {
         formData.append("singleSessionPrice", "null");
       } else {
         formData.append("singleSessionPrice", data.singleSessionPrice.toString());
       }
-  
+
       const response = await createActivity(formData);
       toast.success(response.data.message, { id: loadingToastId });
       router.push('/provider/activity/')
     } catch (error: any) {
       // An error occurred during registration
       console.error("An error occurred during registration:", error);
-      toast.error(error.response?.data?.error || "An error occurred", {
+      toast.error(error.response?.data?.error || "Please fill all the fields", {
         id: loadingToastId,
       });
     }
   };
-  
-  
+
 
   return (
     <div className="px-8">
-      <div className="flex justify-between items-center">
+      {/* <div className="flex justify-between items-center"> */}
         <TableHeader title="Add New Activity" />
         {/* <Button onClick={() => setDisable(false)} size={"small"}>Edit Profile</Button> */}
-      </div>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
+      {/* </div> */}
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col pb-8">
         <div className="mt-3">
           <FormInput
             label={"Title"}
@@ -120,7 +119,7 @@ export default function NewActivityPage() {
             errors={errors}
           />
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 w-full">
             <FormInput
               label={"Age range start"}
               placeholder="Age range start"
@@ -139,25 +138,34 @@ export default function NewActivityPage() {
           </div>
 
           <div className="flex items-center gap-4">
-            <FormInput
-              type="date"
-              label={"Activity start date"}
-              placeholder="Activity start date"
-              register={register}
-              name={"activityStartDate"}
-              errors={errors}
-            />
-            <FormInput
-              type="date"
-              label={"Activity end date"}
-              placeholder="Activity end date"
-              register={register}
-              name={"activityEndDate"}
-              errors={errors}
-            />
+            <div className="w-full mt-4">
+              Activity start date
+              <FormInput
+                type="date"
+                label={"Activity start date"}
+                placeholder="Activity start date"
+                register={register}
+                name={"activityStartDate"}
+                errors={errors}
+              />
+            </div>
+            <div className="w-full mt-4">
+              Activity end date
+              <FormInput
+                type="date"
+                label={"Activity end date"}
+                placeholder="Activity end date"
+                register={register}
+                name={"activityEndDate"}
+                errors={errors}
+              />
+            </div>
+
           </div>
 
           <div className="flex items-center gap-4">
+          <div className="w-full mt-4">
+          Activity start time
             <FormInput
               type="time"
               label={"Activity start time"}
@@ -166,6 +174,9 @@ export default function NewActivityPage() {
               name={"activityStartTime"}
               errors={errors}
             />
+                      </div>
+
+             <div className="w-full mt-4">Activity end time
             <FormInput
               type="time"
               label={"Activity end time"}
@@ -174,6 +185,8 @@ export default function NewActivityPage() {
               name={"activityEndTime"}
               errors={errors}
             />
+                      </div>
+
           </div>
 
           <div className="flex items-start gap-4">
@@ -238,7 +251,7 @@ export default function NewActivityPage() {
           />
 
           <div className="mt-10 flex justify-end">
-            <Button size={"small"}>Save Changes</Button>
+            <Button size={"small"}>Create Activity</Button>
           </div>
         </div>
       </form>

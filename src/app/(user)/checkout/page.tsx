@@ -72,7 +72,7 @@ export default function UserPage() {
                 <h2 className="font-medium text-xl">Bank Information</h2>
                 <p className="mt-2 text-sm">Bank Syariah Indonesia</p>
                 <p className="font-medium my-1 text-sm flex items-center gap-4">Account Number - 12312312312321 <button onClick={() => copyToClipboard('12312312312321')}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg>
                 </button>
                 </p>
                 {/* <p className="text-primary">Activity Schedule</p> */}
@@ -87,7 +87,7 @@ export default function UserPage() {
               <div>
                 <h2 className="font-medium my-4">Upload</h2>
                 <p className="flex items-center gap-2">
-                  {image ? <img src={image} alt="Uploaded" className="h-[20px] w-[20px] rounded-full" /> : <button onClick={() => setOpen(true)} className="w-full text-sm font-medium text-center text-primary flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14" /><path d="m18 13-6-6-6 6" /><path d="M12 7v14" /></svg>Proof of payment</button>
+                  {image ? <img src={image} alt="Uploaded" className="h-[20px] w-[20px] rounded-full" /> : <button onClick={() => setOpen(true)} className="w-full text-sm font-medium text-center text-primary flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 3h14" /><path d="m18 13-6-6-6 6" /><path d="M12 7v14" /></svg>Proof of payment</button>
                   }
                 </p>
 
@@ -113,7 +113,7 @@ export default function UserPage() {
             >
 
               <div className="w-full flex items-center flex-col justify-center border mt-4 py-12 rounded-xl">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="M12 5v14" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="M12 5v14" /></svg>
                 <p>Upload</p>
               </div>
               <input id="file-upload" onChange={handleInputChange} name="file-upload" type="file" className="sr-only" />

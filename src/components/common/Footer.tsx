@@ -34,9 +34,9 @@ const Footer = () => {
 
           <ul className='mt-4 flex flex-col gap-2'>
             <li>
-              <Link href='/' className='flex items-center text-white gap-2'>
+              <Link href='/provider' className='flex items-center text-white gap-2'>
                 <Image src="/arrow.svg" height={13} width={13} alt='arrow icon' />
-                Activity Provider? Login
+                Activity Provider?
               </Link>
             </li>
 

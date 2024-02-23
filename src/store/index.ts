@@ -101,3 +101,26 @@ export const useCartStore = create<CartState>((set) => {
       }),
   };
 });
+
+
+interface ModalState {
+  signUpOpen: boolean;
+  signInOpen: boolean;
+  signOutOpen: boolean;
+}
+
+interface ModalActions {
+  setSignUpOpen: (isOpen: boolean) => void;
+  setSignInOpen: (isOpen: boolean) => void;
+  setSignOutOpen: (isOpen: boolean) => void;
+}
+
+export const useModalStore = create<ModalState & ModalActions>((set) => ({
+  signUpOpen: false,
+  signInOpen: false,
+  signOutOpen: false,
+  setSignUpOpen: (isOpen) => set({ signUpOpen: isOpen }),
+  setSignInOpen: (isOpen) => set({ signInOpen: isOpen }),
+  setSignOutOpen: (isOpen) => set({ signOutOpen: isOpen }),
+}));
+

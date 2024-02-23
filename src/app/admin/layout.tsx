@@ -17,20 +17,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   }, [user])
 
   return (
-    <html lang="en">
-      <body>
-        {
-          user ? (
-            <main className="bg-light-gray flex items-start">
-              <AdminSideMenu />
-              <section className="min-w-[calc(100vw-250px)] max-h-screen overflow-y-auto">
-                <Navbar user={user} />
-                {children}
-              </section>
-            </main>
-          ) : null
-        }
-      </body>
-    </html>
+   
+     user ? <main className="bg-light-gray flex items-start">
+        <AdminSideMenu />
+        <section className="min-w-[calc(100vw-250px)] max-h-screen overflow-y-auto">
+          {user && <Navbar user={user} />}
+          {children}
+        </section>
+      </main> : null
   );
 }

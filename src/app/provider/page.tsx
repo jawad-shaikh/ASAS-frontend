@@ -1,9 +1,11 @@
+
 import ProviderSignUpForm from "@/components/ProviderSignUpForm";
 import Button from "@/components/common/Button";
 import Footer from "@/components/common/Footer";
 import Hero from "@/components/common/Hero";
 import UserNavbar from "@/components/common/UserNavbar";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function ProviderPage() {
   return (
@@ -20,7 +22,7 @@ export default function ProviderPage() {
             As an educator, your journey with us begins here a place where learning meets innovation. Empower young minds and shape the future through interactive and engaging teaching experiences.
           </p>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+          <div id="get-started" className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
             <Image src="/provider.png" alt="provider banner" width={500} height={500} className="rounded-md lg:col-span-2 w-full" />
             <ProviderSignUpForm />
           </div>
@@ -54,11 +56,11 @@ export default function ProviderPage() {
           <div className="p-6 bg-[#EAEAEA] rounded-xl grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
             <div className="lg:col-span-2">
               <h3 className="font-medium">Join Us & Shapping Your Minds</h3>
-              <p className="text-sm font-thin mt-2">Become a part of [Your Website Name] and make a lasting impact on the educational journey of young learners. Together, let&lsquo;s create a foundation for lifelong learning and success.</p>
+              <p className="text-sm font-thin mt-2">Become a part of ASAS and make a lasting impact on the educational journey of young learners. Together, let&lsquo;s create a foundation for lifelong learning and success.</p>
             </div>
-            <Button size={"small"}>
+            <Link href={"#get-started"} className="w-full rounded-full bg-primary flex items-center justify-center text-white font-semibold">
               Get Started
-            </Button>
+            </Link>
           </div>
         </section>
 

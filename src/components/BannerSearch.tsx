@@ -1,12 +1,22 @@
-import React from 'react'
+'use client'
+import React, { useState } from 'react'
 import { Icon } from './common/Icons'
+import { useRouter } from 'next/navigation'
 
 const BannerSearch = () => {
+  const [search, setSearch] = useState("")
+  const router = useRouter()
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault(); // Prevent default form submission behavior
+    router.push('/search/'+search); // Log the value to the console
+  };
+
   return (
-    <div className='flex items-center rounded-full p-4 bg-white w-[588px] gap-4 mx-auto mt-12'>
+    <form onSubmit={handleSubmit} className='flex items-center rounded-full p-4 bg-white w-[588px] gap-4 mx-auto mt-12'>
         <Icon.search />
-        <input type="text" placeholder='Explore Activities' className='w-full outline-none' />
-    </div>
+        <input type="text" value={search} onChange={(e:any) => setSearch(e.target.value)} placeholder='Explore Activities' className='w-full outline-none' />
+    </form>
   )
 }
 

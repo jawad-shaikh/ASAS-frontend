@@ -7,7 +7,7 @@ import { z } from "zod";
 import { loginSchema } from "@/validations";
 import Button from "../common/Button";
 import { parentLogin, providerLogin } from "@/api";
-import useAuthStore from "@/store";
+import useAuthStore, { useModalStore } from "@/store";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
@@ -17,6 +17,7 @@ const LogInModal = () => {
   const [user, setUser] = useState("parent");
   const router = useRouter();
   const { login } = useAuthStore();
+  const { setSignInOpen, setSignUpOpen } = useModalStore()
   const {
     register,
     handleSubmit,
@@ -36,7 +37,6 @@ const LogInModal = () => {
       }
 
       if (res.data && res.data.data.token && res.data.data.userData) {
-        console.table(res.data.data.token, res.data.data.userData);
         login(res.data.data.token, res.data.data.userData);
         console.log("Login successful");
         toast.success("Login successful!", { id: loadingToastId });
@@ -44,7 +44,7 @@ const LogInModal = () => {
       } else {
         console.error("Token or user data not found in response");
       }
-      console.log(res.data.data);
+      setSignInOpen(false)
     } catch (error: any) {
       toast.error(error.response.data.error, { id: loadingToastId });
       console.log(error);
@@ -72,22 +72,20 @@ const LogInModal = () => {
         <button
           type="button"
           onClick={() => setUser("parent")}
-          className={`p-2 font-medium w-full ${
-            user === "parent"
+          className={`p-2 font-medium w-full ${user === "parent"
               ? "border-b-2 border-primary text-primary"
               : "text-black"
-          }`}
+            }`}
         >
           Parent
         </button>
         <button
           type="button"
           onClick={() => setUser("provider")}
-          className={`p-2 font-medium w-full ${
-            user === "provider"
+          className={`p-2 font-medium w-full ${user === "provider"
               ? "border-b-2 border-primary text-primary"
               : "text-black"
-          }`}
+            }`}
         >
           Provider
         </button>
@@ -110,7 +108,10 @@ const LogInModal = () => {
         />
       </div>
       <div className="mt-10">
-        <p className="text-sm mb-4">Dont have an account? Sign Up</p>
+        <p className="text-sm mb-4 cursor-pointer" onClick={() => {
+          setSignUpOpen(true)
+          setSignInOpen(false)
+        }}>Dont have an account? Sign Up</p>
         <Button size={"large"}>Login</Button>
       </div>
     </form>

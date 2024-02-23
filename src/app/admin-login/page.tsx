@@ -31,7 +31,6 @@ const LoginPage = () => {
             const res = await adminLogin(data);
             console.log(res)
             if (res.data && res.data.data.token && res.data.data.userData) {
-                console.table(res.data.data.token, res.data.data.userData)
                 login(res.data.data.token, res.data.data.userData);
                 console.log('Login successful');
                 router.push('/admin')

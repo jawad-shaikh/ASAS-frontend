@@ -10,7 +10,7 @@ const FormInput: React.FC<InputProps> = ({
   type = "text"
 }) => {
   return (
-    <div className="mt-7">
+    <div className="mt-7 w-full">
       <label className="sr-only block mb-2 text-sm" htmlFor={name}>
         {label}
       </label>

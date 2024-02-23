@@ -10,7 +10,7 @@ const ProviderSideMenu = () => {
   const pathname = usePathname()
   const { logout } = useAuthStore()
   return (
-    <div className="min-w-[250px] max-w-[250px] flex h-screen flex-col border-e bg-white">
+    <div className="min-w-[250px] max-w-[250px] flex max-h-screen min-h-screen overflow-scroll flex-col border-e bg-white">
       <Image src="/logo.svg" height={30} width={75} alt='ASAS Logo' className='h-auto w-[73px] py-2 my-4 mx-6' />
       <div className="px-4 py-6">
 

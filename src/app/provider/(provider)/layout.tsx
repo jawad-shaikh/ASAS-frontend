@@ -22,7 +22,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           user ? (
             <main className="bg-light-gray flex items-start">
               <ProviderSideMenu />
-              <section className="min-w-[calc(100vw-250px)] max-h-screen overflow-y-auto">
+              <section className="min-w-[calc(100vw-250px)] max-h-screen min-h-screen overflow-y-auto">
                 <Navbar user={user} />
                 {children}
               </section>

@@ -18,6 +18,7 @@ const ProviderSignUpForm = () => {
         register,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm<FormValues>({
         resolver: zodResolver(providerFormSchema),
     });
@@ -27,6 +28,7 @@ const ProviderSignUpForm = () => {
         try {
             const response = await providerRegister(data);
             toast.success(response.data.message, { id: loadingToastId });
+            reset();
         } catch (error: any) {
             // An error occurred during registration
             console.error('An error occurred during registration:', error);
