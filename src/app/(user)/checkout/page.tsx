@@ -17,6 +17,8 @@ export default function UserPage() {
   const [image, setImage] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<any | null>(null);
 
+  
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
@@ -37,27 +39,38 @@ export default function UserPage() {
   };
 
   const onSubmit = async () => {
+    const id = toast.loading("Loading....")
 
-    if(items.length && image){
-      // Create FormData object
-      const formData = new FormData();
+    try {
+    
+      if(items.length && image){
+        // Create FormData object
+        const formData = new FormData();
+  
+        // Append the image file to FormData
+        formData.append('proof-of-payment', imageFile, imageFile.name);
+  
+        const data = items.map(item => ({
+          sessionDates: item.sessionDates?.map(i => new Date(i).toISOString()),
+          bookingType: item.bookingType,
+          attendeeIds: item.attendeeIds?.map(i => i.id),
+          activityId: item.activity.id,
+      }))
+      console.log(data)
+        formData.append('orders', JSON.stringify(data));
+        await createOrders(formData)
+        toast.success("Checkout Successful")
+        window.localStorage.removeItem('cartItems')
+        router.push('/explore')
+      }else {
+        toast.error("Please select proof of payment", {id});
+      }
 
-      // Append the image file to FormData
-      formData.append('proof-of-payment', imageFile, imageFile.name);
-
-      const data = items.map(item => ({
-        sessionDates: item.sessionDates?.map(i => new Date(i).toISOString()),
-        bookingType: item.bookingType,
-        attendeeIds: item.attendeeIds?.map(i => i.id),
-        activityId: item.activity.id,
-    }))
-    console.log(data)
-      formData.append('orders', JSON.stringify(data));
-      await createOrders(formData)
-      console.log(formData)
-    }else {
-      toast.error("Please select proof of payment");
+    } catch (error) {
+        console.log(error)
+        toast.error('There was an error', {id})
     }
+    
   }
 
   return (

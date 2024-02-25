@@ -29,10 +29,11 @@ export const myChildren = () => API.get("/parents/children");
 
 export const updateProfile = (data: any) => API.patch("/parents/me", data);
 
-export const updateChildren = (data: any) =>
-  API.post("/parents/children", data);
+export const updateChildren = (data: any) => API.post("/parents/children", data);
 
 export const getAllRequest = () => API.get("/activity-providers/requests");
+
+export const giveReview = (id: any, orderDetailId: any, data: any) => API.post(`/activities/${id}/reviews?orderDetailId=${orderDetailId}`, data);
 
 export const getAllProviders = () => API.get("/activity-providers");
 

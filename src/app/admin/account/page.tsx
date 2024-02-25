@@ -1,4 +1,5 @@
 'use client'
+import { providerRegister } from "@/api";
 import TableHeader from "@/components/TableHeader";
 import Button from "@/components/common/Button";
 import FormInput from "@/components/common/FormInput";

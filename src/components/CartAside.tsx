@@ -96,13 +96,12 @@ const CartAside = ({
     useEffect(() => {
         setPrice(calculateItemPrices([{ bookingType: bookingOption, attendeeIds: tempSelectedOptions, sessionDates: selectedDates, activity: product }])[0]);
     }, [bookingOption, selectedDates, tempSelectedOptions])
-
-    console.log(selectedDates, tempSelectedOptions)
+    
     return (
         <>
             <div className="bg-white rounded-xl p-6 flex flex-col gap-4 divide-y">
                 {
-                    (isAuthenticated && children?.length > 0) && (
+                    (isAuthenticated) && (
                         <div>
                             <h2 className="font-medium mb-4">Who Attending</h2>
 
@@ -228,7 +227,7 @@ const CartAside = ({
                     else {
                         addToCart(product, bookingOption, tempSelectedOptions, selectedDates)
                         toast.success("Item added to cart successfully")
-                        router.push("/user/cart")
+                        router.push("/cart")
                     }
 
                 }} size={"large"}>Join Class</Button>

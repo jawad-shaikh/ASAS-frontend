@@ -102,7 +102,7 @@ export default function UserPage() {
                 <h2 className="font-medium my-4">Subtotal <span className="text-primary font-medium text-2xl">${calculateTotalPrice(calculateItemPrices(items))}</span></h2>
               </div>
               <Button onClick={() => {
-                router.push("/user/checkout")
+                router.push("/checkout")
               }} size={"large"} className="mt-8">Check out</Button>
             </div>
           </div>

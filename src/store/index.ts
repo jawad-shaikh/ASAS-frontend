@@ -30,6 +30,7 @@ const useAuthStore = create<AuthState>((set) => {
     logout: () => {
       localStorage.removeItem('token');
       localStorage.removeItem('userData');
+      window.location.assign("http://localhost:3000");
       set({ isAuthenticated: false, user: null });
     },
   };

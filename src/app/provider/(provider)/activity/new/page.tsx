@@ -4,19 +4,30 @@ import TableHeader from "@/components/TableHeader";
 import Button from "@/components/common/Button";
 import FormInput from "@/components/common/FormInput";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { LegacyRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { usePlacesWidget } from "react-google-autocomplete";
 
-
-const placesLibrary = ["places"];
 
 export default function NewActivityPage() {
+
+  const { ref, autocompleteRef } = usePlacesWidget({
+    apiKey: 'AIzaSyALid_clJdG76KwqFhqa5qvNqRb8dTt-h8',
+    onPlaceSelected: (place) => {
+      setValue('lat', place.geometry?.location?.lat());
+      setValue('lng', place.geometry?.location?.lng());
+      setValue("formattedAddress", place.formatted_address)
+    }
+  });
+
   const router = useRouter();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<any>();
 
   const [isFullCourse, setIsFullCourse] = useState(false);
@@ -40,7 +51,8 @@ export default function NewActivityPage() {
         } else if (key === "thumbnail") {
           // Append image file
           formData.append("thumbnail", data.thumbnail[0]);
-        } else {
+        } else if (key !== "fullCoursePrice") {
+          console.log(key, value)
           formData.append(key, value?.toString() || "");
         }
       }
@@ -50,13 +62,13 @@ export default function NewActivityPage() {
 
       // Conditionally append fullCoursePrice and singleSessionPrice
       if (!isFullCourse) {
-        formData.append("fullCoursePrice", "null");
+        formData.append("fullCoursePrice", "0");
       } else {
         formData.append("fullCoursePrice", data.fullCoursePrice.toString());
       }
 
       if (!isSingleSession) {
-        formData.append("singleSessionPrice", "null");
+        formData.append("singleSessionPrice", "0");
       } else {
         formData.append("singleSessionPrice", data.singleSessionPrice.toString());
       }
@@ -77,8 +89,8 @@ export default function NewActivityPage() {
   return (
     <div className="px-8">
       {/* <div className="flex justify-between items-center"> */}
-        <TableHeader title="Add New Activity" />
-        {/* <Button onClick={() => setDisable(false)} size={"small"}>Edit Profile</Button> */}
+      <TableHeader title="Add New Activity" />
+      {/* <Button onClick={() => setDisable(false)} size={"small"}>Edit Profile</Button> */}
       {/* </div> */}
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col pb-8">
         <div className="mt-3">
@@ -164,28 +176,28 @@ export default function NewActivityPage() {
           </div>
 
           <div className="flex items-center gap-4">
-          <div className="w-full mt-4">
-          Activity start time
-            <FormInput
-              type="time"
-              label={"Activity start time"}
-              placeholder="Activity start time"
-              register={register}
-              name={"activityStartTime"}
-              errors={errors}
-            />
-                      </div>
+            <div className="w-full mt-4">
+              Activity start time
+              <FormInput
+                type="time"
+                label={"Activity start time"}
+                placeholder="Activity start time"
+                register={register}
+                name={"activityStartTime"}
+                errors={errors}
+              />
+            </div>
 
-             <div className="w-full mt-4">Activity end time
-            <FormInput
-              type="time"
-              label={"Activity end time"}
-              placeholder="Activity end time"
-              register={register}
-              name={"activityEndTime"}
-              errors={errors}
-            />
-                      </div>
+            <div className="w-full mt-4">Activity end time
+              <FormInput
+                type="time"
+                label={"Activity end time"}
+                placeholder="Activity end time"
+                register={register}
+                name={"activityEndTime"}
+                errors={errors}
+              />
+            </div>
 
           </div>
 
@@ -233,13 +245,19 @@ export default function NewActivityPage() {
             </div>
           </div>
 
-          <FormInput
-            label={"Formatted Address"}
-            placeholder="Formatted Address"
-            register={register}
-            name={"formattedAddress"}
-            errors={errors}
-          />
+
+          <div className="mt-7 w-full">
+            <label className="sr-only block mb-2 text-sm" htmlFor={'formattedAddress'}>
+              Formatted Address
+            </label>
+            <input
+              id={'formattedAddress'}
+              className={`block bg-transparent border-b w-full pb-2 outline-none ${errors['formattedAddress'] ? "border-red-500" : "border-border"}`}
+              placeholder={"Formatted Address"}
+              ref={ref as unknown as LegacyRef<HTMLInputElement>}
+              onChange={(e: any) => setValue("formattedAddress", e.target.value)}
+            />
+          </div>
 
           <FormInput
             type="file"

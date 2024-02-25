@@ -1,4 +1,3 @@
-import { optimizeImage } from 'next/dist/server/image-optimizer';
 import React, { useState } from 'react';
 
 interface Option {

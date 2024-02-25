@@ -92,6 +92,7 @@ export default function PaidPage() {
             className="bg-primary text-white px-8 py-2 rounded-full inline-flex"
             onClick={async () => {
               await approveOrder(props.row.original.id)
+              getData();
               toast.success("Order Approved successfully")
             }}
           >
@@ -102,6 +103,7 @@ export default function PaidPage() {
             className="border border-primary text-primary px-8 py-2 rounded-full inline-flex"
             onClick={async () => {
               await rejectOrder(props.row.original.id)
+              getData();
               toast.success("Order Rejected successfully")
             }}
           >

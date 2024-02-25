@@ -12,7 +12,7 @@ export const site = {
     }
 }
 
-export const products: Product[] = [
+export const products = [
     {
       src: '/preview.png',
       title: 'Advance Delcroze Placement Pre S...',

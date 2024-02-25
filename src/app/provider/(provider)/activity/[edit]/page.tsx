@@ -5,18 +5,26 @@ import Button from "@/components/common/Button";
 import FormInput from "@/components/common/FormInput";
 import { providerAccountFormSchema } from "@/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 // import { Autocomplete, useLoadScript } from "@react-google-maps/api";
-import { useEffect, useState } from "react";
+import { LegacyRef, useEffect, useState } from "react";
+import { usePlacesWidget } from "react-google-autocomplete";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { z } from "zod";
 
-type FormValues = z.infer<typeof providerAccountFormSchema>;
+export default function NewActivityPage({ params }: any) {
 
-const placesLibrary = ["places"];
+  const router = useRouter()
+  const { ref, autocompleteRef } = usePlacesWidget({
+    apiKey: 'AIzaSyALid_clJdG76KwqFhqa5qvNqRb8dTt-h8',
+    onPlaceSelected: (place) => {
+      setValue('lat', place.geometry?.location?.lat());
+      setValue('lng', place.geometry?.location?.lng());
+      setValue("formattedAddress", place.formatted_address)
+    }
+  });
 
-export default function NewActivityPage({ params}: any) {
-  const [data, setData] = useState();
+  const [data, setData] = useState<any>();
 
 
   const [isFullCourse, setIsFullCourse] = useState(false);
@@ -26,7 +34,8 @@ export default function NewActivityPage({ params}: any) {
     register,
     handleSubmit,
     formState: { errors },
-    setValue
+    setValue,
+    getValues
   } = useForm<any>();
 
 
@@ -34,7 +43,7 @@ export default function NewActivityPage({ params}: any) {
     const loadingToastId = toast.loading("Operation in progress...");
     try {
       const formData = new FormData();
-      Object.entries(data).forEach(([key, value]) => {
+      Object.entries(data).forEach(([key, value]: any) => {
         if (key === "activityStartTime" || key === "activityEndTime") {
           // Convert time to ISO string format
           const [hours, minutes] = value.split(":");
@@ -43,22 +52,23 @@ export default function NewActivityPage({ params}: any) {
           formData.append(key, today.toISOString());
         } else if (key === "activityStartDate" || key === "activityEndDate") {
           // Convert date to ISO string format
-          formData.append(key, new Date(value).toISOString());
+          formData.append(key, new Date(value as any).toISOString());
         } else if (key === "thumbnail") {
           // Convert date to ISO string format
           return;
         } else {
-          formData.append(key, value);
+          formData.append(key, value as any);
         }
       });
-      formData.append("isFullCourse", isFullCourse);
-      formData.append("isSingleSession", isSingleSession);
+      formData.append("isFullCourse", isFullCourse as any);
+      formData.append("isSingleSession", isSingleSession as any);
 
       // Append image file
-      if(data?.thumbnail?.length) formData.append("thumbnail", data?.thumbnail[0]);
+      if (data?.thumbnail?.length) formData.append("thumbnail", data?.thumbnail[0]);
 
       const response = await updateActivity(params.edit, formData);
       toast.success(response.data.message, { id: loadingToastId });
+      router.push('/provider/activity/')
     } catch (error: any) {
       // An error occurred during registration
       console.error("An error occurred during registration:", error);
@@ -100,6 +110,11 @@ export default function NewActivityPage({ params}: any) {
         setValue(key, data[key]);
       });
 
+      const formattedAddressInput = document.getElementById('formattedAddress') as HTMLInputElement | null;
+      if (formattedAddressInput) {
+        formattedAddressInput.value = getValues('formattedAddress') || "";
+      }
+
       // Convert activityStartDate and activityEndDate to input date type
       setValue("activityStartDate", formatDate(data.activityStartDate));
       setValue("activityEndDate", formatDate(data.activityEndDate));
@@ -127,171 +142,176 @@ export default function NewActivityPage({ params}: any) {
   };
   return (
     <div className="px-8">
-    <div className="flex justify-between items-center">
-      <TableHeader title="Edit Activity" />
-      {/* <Button onClick={() => setDisable(false)} size={"small"}>Edit Profile</Button> */}
-    </div>
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
-      <div className="mt-3">
-        <FormInput
-          label={"Title"}
-          placeholder="Title"
-          register={register}
-          name={"title"}
-          errors={errors}
-        />
-        <FormInput
-          label={"Description"}
-          placeholder="Description"
-          register={register}
-          name={"description"}
-          errors={errors}
-        />
-        <select
-          id="category"
-          className={`mt-7 block bg-transparent border-b w-full pb-2 outline-none border-border`}
-          {...register("category")}
-        >
-          <option value="MUSIC" selected>
-            Music
-          </option>
-          <option value="ART">Art</option>
-          <option value="COOKING">Cooking</option>
-          <option value="ROBOTS">Robots</option>
-          <option value="LANGUAGE">Language</option>
-          <option value="SPORTS">Sports</option>
-        </select>
-
-        <FormInput
-          label={"Capacity"}
-          placeholder="Capacity"
-          register={register}
-          name={"capacity"}
-          errors={errors}
-        />
-
-        <div className="flex items-center gap-4">
+      <div className="flex justify-between items-center">
+        <TableHeader title="Edit Activity" />
+        {/* <Button onClick={() => setDisable(false)} size={"small"}>Edit Profile</Button> */}
+      </div>
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
+        <div className="mt-3">
           <FormInput
-            label={"Age range start"}
-            placeholder="Age range start"
+            label={"Title"}
+            placeholder="Title"
             register={register}
-            name={"ageRangeStart"}
-            errors={errors}
-          />
-
-          <FormInput
-            label={"Age range end"}
-            placeholder="Age range end"
-            register={register}
-            name={"ageRangeEnd"}
-            errors={errors}
-          />
-        </div>
-
-        <div className="flex items-center gap-4">
-          <FormInput
-            type="date"
-            label={"Activity start date"}
-            placeholder="Activity start date"
-            register={register}
-            name={"activityStartDate"}
+            name={"title"}
             errors={errors}
           />
           <FormInput
-            type="date"
-            label={"Activity end date"}
-            placeholder="Activity end date"
+            label={"Description"}
+            placeholder="Description"
             register={register}
-            name={"activityEndDate"}
+            name={"description"}
             errors={errors}
           />
-        </div>
+          <select
+            id="category"
+            className={`mt-7 block bg-transparent border-b w-full pb-2 outline-none border-border`}
+            {...register("category")}
+          >
+            <option value="MUSIC" selected>
+              Music
+            </option>
+            <option value="ART">Art</option>
+            <option value="COOKING">Cooking</option>
+            <option value="ROBOTS">Robots</option>
+            <option value="LANGUAGE">Language</option>
+            <option value="SPORTS">Sports</option>
+          </select>
 
-        <div className="flex items-center gap-4">
           <FormInput
-            type="time"
-            label={"Activity start time"}
-            placeholder="Activity start time"
+            label={"Capacity"}
+            placeholder="Capacity"
             register={register}
-            name={"activityStartTime"}
+            name={"capacity"}
             errors={errors}
           />
-          <FormInput
-            type="time"
-            label={"Activity end time"}
-            placeholder="Activity end time"
-            register={register}
-            name={"activityEndTime"}
-            errors={errors}
-          />
-        </div>
 
-        <div className="flex items-start gap-4">
-          <div className="mt-4">
-            <div className="checkboxes__item">
-              <label className="checkbox style-c">
-                <input type="checkbox"
-                  checked={isSingleSession}
-                  onChange={() => setIsSingleSession(!isSingleSession)} />
-                <div className="checkbox__checkmark"></div>
-                <div className="text-sm">Is Single Session</div>
-              </label>
-            </div>
-            {isSingleSession ? <FormInput
-              label={"Single Session Price"}
-              placeholder="Single Session Price"
+          <div className="flex items-center gap-4">
+            <FormInput
+              label={"Age range start"}
+              placeholder="Age range start"
               register={register}
-              name={"singleSessionPrice"}
+              name={"ageRangeStart"}
               errors={errors}
             />
-              : null}
+
+            <FormInput
+              label={"Age range end"}
+              placeholder="Age range end"
+              register={register}
+              name={"ageRangeEnd"}
+              errors={errors}
+            />
           </div>
 
-          <div className="mt-4">
-            <div className="checkboxes__item">
-              <label className="checkbox style-c">
-                <input type="checkbox"
-                  checked={isFullCourse}
-                  onChange={() => setIsFullCourse(!isFullCourse)} />
-                <div className="checkbox__checkmark"></div>
-                <div className="text-sm">Is Full Course</div>
-              </label>
-            </div>
-            {
-              isFullCourse ? <FormInput
-                label={"Full Course Price"}
-                placeholder="Full Course Price"
+          <div className="flex items-center gap-4">
+            <FormInput
+              type="date"
+              label={"Activity start date"}
+              placeholder="Activity start date"
+              register={register}
+              name={"activityStartDate"}
+              errors={errors}
+            />
+            <FormInput
+              type="date"
+              label={"Activity end date"}
+              placeholder="Activity end date"
+              register={register}
+              name={"activityEndDate"}
+              errors={errors}
+            />
+          </div>
+
+          <div className="flex items-center gap-4">
+            <FormInput
+              type="time"
+              label={"Activity start time"}
+              placeholder="Activity start time"
+              register={register}
+              name={"activityStartTime"}
+              errors={errors}
+            />
+            <FormInput
+              type="time"
+              label={"Activity end time"}
+              placeholder="Activity end time"
+              register={register}
+              name={"activityEndTime"}
+              errors={errors}
+            />
+          </div>
+
+          <div className="flex items-start gap-4">
+            <div className="mt-4">
+              <div className="checkboxes__item">
+                <label className="checkbox style-c">
+                  <input type="checkbox"
+                    checked={isSingleSession}
+                    onChange={() => setIsSingleSession(!isSingleSession)} />
+                  <div className="checkbox__checkmark"></div>
+                  <div className="text-sm">Is Single Session</div>
+                </label>
+              </div>
+              {isSingleSession ? <FormInput
+                label={"Single Session Price"}
+                placeholder="Single Session Price"
                 register={register}
-                name={"fullCoursePrice"}
+                name={"singleSessionPrice"}
                 errors={errors}
-              /> : null
-            }
+              />
+                : null}
+            </div>
 
+            <div className="mt-4">
+              <div className="checkboxes__item">
+                <label className="checkbox style-c">
+                  <input type="checkbox"
+                    checked={isFullCourse}
+                    onChange={() => setIsFullCourse(!isFullCourse)} />
+                  <div className="checkbox__checkmark"></div>
+                  <div className="text-sm">Is Full Course</div>
+                </label>
+              </div>
+              {
+                isFullCourse ? <FormInput
+                  label={"Full Course Price"}
+                  placeholder="Full Course Price"
+                  register={register}
+                  name={"fullCoursePrice"}
+                  errors={errors}
+                /> : null
+              }
+
+            </div>
+          </div>
+
+          <div className="mt-7 w-full">
+            <label className="sr-only block mb-2 text-sm" htmlFor={'formattedAddress'}>
+              Formatted Address
+            </label>
+            <input
+              id={'formattedAddress'}
+              className={`block bg-transparent border-b w-full pb-2 outline-none ${errors['formattedAddress'] ? "border-red-500" : "border-border"}`}
+              placeholder={"Formatted Address"}
+              ref={ref as unknown as LegacyRef<HTMLInputElement>}
+              onChange={(e: any) => setValue("formattedAddress", e.target.value)}
+            />
+          </div>
+
+          <FormInput
+            type="file"
+            label={"Thumbnail"}
+            placeholder="Thumbnail"
+            register={register}
+            name={"thumbnail"}
+            errors={errors}
+          />
+
+          <div className="mt-10 flex justify-end">
+            <Button size={"small"}>Save Changes</Button>
           </div>
         </div>
-
-        <FormInput
-          label={"Formatted Address"}
-          placeholder="Formatted Address"
-          register={register}
-          name={"formattedAddress"}
-          errors={errors}
-        />
-
-        <FormInput
-          type="file"
-          label={"Thumbnail"}
-          placeholder="Thumbnail"
-          register={register}
-          name={"thumbnail"}
-          errors={errors}
-        />
-
-        <div className="mt-10 flex justify-end">
-          <Button size={"small"}>Save Changes</Button>
-        </div>
-      </div>
-    </form>
-  </div>
+      </form>
+    </div>
   );
 }

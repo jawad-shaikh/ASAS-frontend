@@ -71,7 +71,7 @@ const Child = () => {
                                     label={"Child Full Name"}
                                     placeholder="Child Full Name"
                                     register={register}
-                                    name={`children[${index}].childName`} // Updated name with index
+                                    name={`children[${index}].fullName`} // Updated name with index
                                     errors={errors}
                                 />
 
@@ -80,7 +80,7 @@ const Child = () => {
                                     label={"Child Birthday"}
                                     placeholder="Child Birthday"
                                     register={register}
-                                    name={`children[${index}].childBirthDate`} // Updated name with index
+                                    name={`children[${index}].birthDay`} // Updated name with index
                                     errors={errors}
                                 />
                             </div>
