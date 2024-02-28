@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from "axios";
+import axios, { AxiosInstance, AxiosError } from "axios";
 
 // Create Axios instance
 export const API: AxiosInstance = axios.create({
@@ -29,11 +29,15 @@ export const myChildren = () => API.get("/parents/children");
 
 export const updateProfile = (data: any) => API.patch("/parents/me", data);
 
+export const updateProfilePicture = (data: any) => API.patch("/parents/me/update-profile-picture", data);
+
 export const updateChildren = (data: any) => API.post("/parents/children", data);
 
 export const getAllRequest = () => API.get("/activity-providers/requests");
 
 export const giveReview = (id: any, orderDetailId: any, data: any) => API.post(`/activities/${id}/reviews?orderDetailId=${orderDetailId}`, data);
+
+export const getReviews = (id: any) => API.post(`activities/${id}/reviews`);
 
 export const getAllProviders = () => API.get("/activity-providers");
 

@@ -1,37 +1,59 @@
 'use client'
-import { me, updateProfile } from "@/api";
+import { me, updateProfile, updateProfilePicture } from "@/api";
 import Child from "@/components/Child";
 import Button from "@/components/common/Button";
 import FormInput from "@/components/common/FormInput";
 import { profileSchema } from "@/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { z } from "zod";
 
-type FormValues = z.infer<typeof profileSchema>;
+const schema = z.object({
+  profilePicture: z.any().optional(), // Assuming profile picture will be stored as a string (e.g., file path or URL)
+  fullName: z.string().nonempty({ message: 'Full name is required' }),
+  phoneNumber: z.string().nonempty({ message: 'Phone number is required' }),
+  address: z.string().nonempty({ message: 'Address is required' }),
+  city: z.string().nonempty({ message: 'City is required' }),
+  state: z.string().nonempty({ message: 'State is required' }),
+  zipCode: z.string().nonempty({ message: 'Zip code is required' }),
+});
+
+type FormValues = z.infer<typeof schema>;
 
 
 export default function ProfilePage() {
 
   const {
     register,
-    control,
     handleSubmit,
     setValue,
     formState: { errors },
   } = useForm<FormValues>({
-    resolver: zodResolver(profileSchema),
+    resolver: zodResolver(schema),
   });
   
   const onSubmit = async (formData: FormValues) => {
+    const loadingToastId = toast.loading('Updating profile...');
+    // Remove the profilePicture field from the formData object
+    const { profilePicture, ...formDataWithoutProfilePicture } = formData;
+    console.log(profilePicture)
     try {
-      const {data} = await updateProfile(formData);
+      if(profilePicture[0]){
+        const formDataToSend = new FormData();
+        formDataToSend.append('profile', profilePicture[0]);
+        await updateProfilePicture(formDataToSend)
+      }
+      const {data} = await updateProfile(formDataWithoutProfilePicture);
 
       console.log(data);
 
+      toast.success("Profile updated", { id: loadingToastId });
+      getData()
     } catch (error: any) {
       console.log(error);
+      toast.error(error.response.data.error, { id: loadingToastId });
     }
   };
 
@@ -39,7 +61,7 @@ export default function ProfilePage() {
     try {
       const { data } = await me();
       Object.keys(data.data).forEach((key: any) => {
-        console.log(key, data.data[key])
+        // console.log(key, data.data[key])
         return setValue(key, data.data[key]);
       });
     } catch (error: any) {

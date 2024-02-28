@@ -43,7 +43,7 @@ const Table = ({ data, columns }: any) => {
   });
   
     return (
-      data ? <>
+      data.length ? <>
         <div className="overflow-x-auto relative max-w-full bg-white shadow-md">
           <table className="w-full table-auto overflow-scroll border border-gray">
             <thead>

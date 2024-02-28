@@ -10,19 +10,27 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
-type FormValues = z.infer<typeof providerAccountFormSchema>;
+const schema = z.object({
+    firstName: z.string().nonempty({ message: 'First name is required' }),
+    lastName: z.string().nonempty({ message: 'Last name is required' }),
+    businessName: z.string().nonempty({ message: 'Business name is required' }),
+    website: z.string().url({ message: 'Invalid website URL' }),
+    phoneNumber: z.string().nonempty({ message: 'Phone number is required' }),
+  });
+
+type FormValues = z.infer<typeof schema>;
 
 export default function ProfilePage() {
     const [data, setData] = useState<FormValues | null>(null); // Initialize data state
-
-    const [isDisable, setDisable] = useState(true);
 
     const {
         register,
         handleSubmit,
         formState: { errors },
         setValue,
-    } = useForm<FormValues>();
+    } = useForm<FormValues>({
+        resolver: zodResolver(schema),
+    });
 
     const onSubmit = async (data: FormValues) => {
         const loadingToastId = toast.loading('Operation in progress...');
@@ -77,7 +85,6 @@ export default function ProfilePage() {
         <div className="px-8">
             <div className="flex justify-between items-center">
                 <TableHeader title="Profile" />
-                <Button onClick={() => setDisable(false)} size={"small"}>Edit Profile</Button>
             </div>
             <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col'>
 
@@ -138,7 +145,7 @@ export default function ProfilePage() {
 
                 </div>
                 <div className='mt-10 flex justify-end'>
-                    <Button disabled={isDisable} size={'small'}>
+                    <Button size={'small'}>
                         Save Changes
                     </Button>
                 </div>

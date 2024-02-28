@@ -44,10 +44,10 @@ const CustomFilterButton: React.FC<CustomFilterButtonProps> = ({ name, options, 
   };
 
   return (
-    <div className="custom-filter-button">
+    <div className="custom-filter-button relative">
       <button onClick={handleToggleDropdown} className={`px-6 py-2 text-sm font-medium rounded-full border ${isOpen ? "border-primary text-primary": "border-black text-black"}`}>{name}</button>
       {isOpen && (
-        <div className="rounded-xl border p-4 max-w-max">
+        <div className="absolute top-12 left-0 z-10 bg-white rounded-xl border p-4 max-w-max">
           <div className='grid grid-cols-2 gap-4'>
           {options.map((option) => (
             <div key={option.value} className="checkboxes__item">

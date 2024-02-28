@@ -85,7 +85,6 @@ export default function NewActivityPage() {
     }
   };
 
-
   return (
     <div className="px-8">
       {/* <div className="flex justify-between items-center"> */}
@@ -101,13 +100,19 @@ export default function NewActivityPage() {
             name={"title"}
             errors={errors}
           />
-          <FormInput
-            label={"Description"}
-            placeholder="Description"
-            register={register}
-            name={"description"}
-            errors={errors}
-          />
+          <div className="mt-7 w-full">
+            <label className="sr-only block mb-2 text-sm" htmlFor={'description'}>
+            Description
+            </label>
+            <textarea
+              id={'description'}
+              className={`block bg-transparent border-b w-full pb-2 outline-none ${errors['description'] ? "border-red-500" : "border-border"}`}
+              placeholder={'Description'}
+              {...register('description')}
+              aria-invalid={errors['description'] ? "true" : "false"}
+            />
+          </div>
+
           <select
             id="category"
             className={`mt-7 block bg-transparent border-b w-full pb-2 outline-none ${errors['category'] ? "border-red-500" : "border-border"}`}
@@ -175,6 +180,7 @@ export default function NewActivityPage() {
 
           </div>
 
+
           <div className="flex items-center gap-4">
             <div className="w-full mt-4">
               Activity start time
@@ -188,7 +194,8 @@ export default function NewActivityPage() {
               />
             </div>
 
-            <div className="w-full mt-4">Activity end time
+            <div className="w-full mt-4">
+              Activity end time
               <FormInput
                 type="time"
                 label={"Activity end time"}
@@ -202,7 +209,7 @@ export default function NewActivityPage() {
           </div>
 
           <div className="flex items-start gap-4">
-            <div className="mt-4">
+            <div className="w-full mt-4">
               <div className="checkboxes__item">
                 <label className="checkbox style-c">
                   <input type="checkbox"
@@ -222,7 +229,7 @@ export default function NewActivityPage() {
                 : null}
             </div>
 
-            <div className="mt-4">
+            <div className="w-full mt-4">
               <div className="checkboxes__item">
                 <label className="checkbox style-c">
                   <input type="checkbox"

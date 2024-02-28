@@ -221,7 +221,11 @@ const CartAside = ({
                 </div>
 
                 <Button onClick={() => {
-                    if (price === 0) {
+                    if (!isAuthenticated) {
+                        toast.error("Please Login");
+
+                    }
+                    else if (price === 0) {
                         toast.error("Please select a options");
                     }
                     else {

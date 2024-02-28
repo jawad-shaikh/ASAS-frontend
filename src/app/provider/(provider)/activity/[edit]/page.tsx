@@ -155,13 +155,18 @@ export default function NewActivityPage({ params }: any) {
             name={"title"}
             errors={errors}
           />
-          <FormInput
-            label={"Description"}
-            placeholder="Description"
-            register={register}
-            name={"description"}
-            errors={errors}
-          />
+          <div className="mt-7 w-full">
+            <label className="sr-only block mb-2 text-sm" htmlFor={'description'}>
+            Description
+            </label>
+            <textarea
+              id={'description'}
+              className={`block bg-transparent border-b w-full pb-2 outline-none ${errors['description'] ? "border-red-500" : "border-border"}`}
+              placeholder={'Description'}
+              {...register('description')}
+              aria-invalid={errors['description'] ? "true" : "false"}
+            />
+          </div>
           <select
             id="category"
             className={`mt-7 block bg-transparent border-b w-full pb-2 outline-none border-border`}
@@ -241,8 +246,9 @@ export default function NewActivityPage({ params }: any) {
             />
           </div>
 
+
           <div className="flex items-start gap-4">
-            <div className="mt-4">
+            <div className="w-full mt-4">
               <div className="checkboxes__item">
                 <label className="checkbox style-c">
                   <input type="checkbox"
@@ -262,7 +268,7 @@ export default function NewActivityPage({ params }: any) {
                 : null}
             </div>
 
-            <div className="mt-4">
+            <div className="w-full mt-4">
               <div className="checkboxes__item">
                 <label className="checkbox style-c">
                   <input type="checkbox"

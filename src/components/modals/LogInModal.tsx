@@ -40,7 +40,7 @@ const LogInModal = () => {
         login(res.data.data.token, res.data.data.userData);
         console.log("Login successful");
         toast.success("Login successful!", { id: loadingToastId });
-        user === "parent" ? "" : router.push("/provider/dashboard");
+        user === "parent" ? router.push("/explore") : router.push("/provider/dashboard");
       } else {
         console.error("Token or user data not found in response");
       }
@@ -109,7 +109,7 @@ const LogInModal = () => {
       </div>
       <div className="mt-10">
         <p className="text-sm mb-4 cursor-pointer" onClick={() => {
-          setSignUpOpen(true)
+          user === "parent" ? setSignUpOpen(true) : router.push('/provider')
           setSignInOpen(false)
         }}>Dont have an account? Sign Up</p>
         <Button size={"large"}>Login</Button>

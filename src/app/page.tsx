@@ -1,4 +1,5 @@
 'use client'
+import ReviewSlider from "@/components/ReviewSlider";
 import Button from "@/components/common/Button";
 import Footer from "@/components/common/Footer";
 import UserNavbar from "@/components/common/UserNavbar";
@@ -151,6 +152,17 @@ export default function LandingPage() {
           </div>
         </section>
 
+        <section className="py-10 sm:py-20 md:py-[104px] container">
+          <h2 className="font-medium text-center text-[32px]">
+          What Our Users Say
+          </h2>
+          <p className="max-w-[794px] text-center mx-auto mt-8">
+          Understand how Learn&Fun benefited the students and help them grow
+          </p>
+
+          <ReviewSlider />
+        </section>
+
         <section className="relative py-10 sm:py-20 md:py-[104px] container">
           <div className="border-2 border-black rounded-[38px] relative bg-[#495AFF] pb-0 pt-8 px-8 md:p-14">
             <h2 className="text-3xl md:text-[50px] text-white">Promo only <span className="border-2 border-black bg-white text-black rounded-[20px] text-center px-2 shadow-[4px_4px_0px]">160</span>  SAR</h2>
@@ -158,7 +170,7 @@ export default function LandingPage() {
             <button className="bg-primary py-2 md:py-4 px-8 md:px-12 inline-block mt-8 shadow-[4px_4px_0px_#000000] text-white rounded-full text-lg md:text-2xl">
               Sign Up
             </button>
-            <Image src="/cta-banner.png" height={500} width={500} alt="CTA Banner" quality={100} className="w-full md:w-[60%] mt-14 md:mt-0 h-auto relative md:absolute bottom-0 right-0" />
+            <Image src="/lp/cta-banner.png" height={500} width={500} alt="CTA Banner" quality={100} className="w-full md:w-[60%] mt-14 md:mt-0 h-auto relative md:absolute bottom-0 right-0" />
             <div className="border-2 border-black rounded-[47px] bg-[#C26591] absolute -right-2 -bottom-2 -z-10 h-full w-full" />
           </div>
         </section>

@@ -35,7 +35,7 @@ const SignUpModal = () => {
                 login(res.data.data.token, res.data.data.jwtPayload);
                 console.log('Login successful');
                 toast.success('Registered successfully!', { id: loadingToastId });
-                router.push('/user')
+                router.push('/explore')
             } else {
                 // Registration failed
                 console.error('Registration failed:', res.data.message);

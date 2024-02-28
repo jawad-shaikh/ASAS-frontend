@@ -42,7 +42,7 @@ export default function ActivityPage() {
       header: "Date",
     }),
     columnHelper.accessor(
-      (row) => (row.description ? `${row.description}` : "-"),
+      (row) => (row.description ? `${row.description}`.substring(0, 24) + "..." : "-"),
       {
         id: "description",
         header: "Description",

@@ -4,21 +4,35 @@ import { Icon } from "@/components/common/Icons";
 import { formatDate, formatTime } from "@/utils/helper";
 import axios from "axios";
 import Image from "next/image";
+import { notFound } from "next/navigation";
+import { Fragment } from "react";
 
 
-export default async function UserPage({params}: any) {
-  const { data } = await axios.get(`https://cpxrkdz4-6600.inc1.devtunnels.ms/api/v1/activities/${params.detail}`)
+export default async function UserPage({ params }: any) {
+  let res = null;
+  try {
+    const { data } = await axios.get(`https://cpxrkdz4-6600.inc1.devtunnels.ms/api/v1/activities/${params.detail}`)
+    res = data.data
+
+  } catch (error: any) {
+    notFound();
+  }
+  const reviews = await axios.get(`https://cpxrkdz4-6600.inc1.devtunnels.ms/api/v1/activities/${params.detail}/reviews`)
+
+
+
   const { id, thumbnailPicture, title, capacity, averageRating, numberOfRatings, ActivityReview, ageRangeStart, ageRangeEnd, activityStartDate, activityEndDate, activityStartTime, activityEndTime,
-    isFullCourse, isSingleSession, fullCoursePrice, singleSessionPrice } = data.data;
+    isFullCourse, isSingleSession, fullCoursePrice, singleSessionPrice} = res;
+    console.log({isFullCourse, isSingleSession, fullCoursePrice, singleSessionPrice})
 
-    console.log(data.data)
+  console.log(res)
   return (
     <main className="bg-light-gray relative py-20">
       <div className="container">
         <h1 className='text-3xl font-medium text-center'>{title}</h1>
         <div className="grid grid-cols-3 items-startS gap-8 mt-8 items-start">
           <div className="col-span-2">
-            <Image src={'/thumbnail.png'} height={500} width={500} alt="Thumbnail" className="w-full h-auto" />
+            <img src={thumbnailPicture} height={500} width={500} alt="Thumbnail" className="w-full h-auto" />
 
             <div className="divide-y">
               <div>
@@ -104,11 +118,6 @@ export default async function UserPage({params}: any) {
 
 
               <div>
-                <h2 className="font-medium my-4">How To Participate</h2>
-                <p className="font-thi text-sm mb-4">You will receive an email 30 minutes before class starts with a link to the class and access instructions.</p>
-              </div>
-
-              <div>
                 <h2 className="font-medium my-4">Reviews</h2>
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-1">
@@ -121,13 +130,13 @@ export default async function UserPage({params}: any) {
                   <p className="font-thin text-sm">{averageRating} out of {numberOfRatings}</p>
                 </div>
 
-                <ReviewCard />
-                <ReviewCard />
-
-                <ReviewCard />
-                <ReviewCard />
-                <ReviewCard />
-                <ReviewCard />
+                {
+                 ActivityReview.length > 0 ? ActivityReview?.map((review: any) => (
+                    <Fragment key={review.id}>
+                      <ReviewCard review={review} />
+                    </Fragment>
+                  )) : <p>No Reviews</p>
+                }
 
               </div>
 
@@ -135,7 +144,7 @@ export default async function UserPage({params}: any) {
             </div>
 
           </div>
-          <CartAside product={data.data} />
+          <CartAside product={res} />
         </div>
       </div>
     </main>

@@ -6,7 +6,7 @@ const EmptyState = () => {
         <div className="flex flex-col items-center justify-center mt-20">
             <Image src="/logo.svg" height={30} width={75} alt='ASAS Logo' className='h-[30px] w-auto' />
             <p className="test-lg font-semibold mt-4">No Data</p>
-      <p className="text-sm text-[#9E9E9E] mt-2">Sorry, data is not available in the table</p>
+      <p className="text-sm text-[#9E9E9E] mt-2">Sorry, no data available</p>
             <svg width="280" height="280" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M52.663 127.029C52.663 127.029 91.4339 125.476 99.8124 61.7453C107.253 5.14599 172.631 30.9079 191.529 53.4698C216.01 82.6968 202.96 132.973 234.629 139.325C266.298 145.676 245.618 216.292 197.546 209.533C137.746 201.125 152.214 236.069 134.262 250.859C121.379 261.474 68.5513 251.256 66.7907 212.722C65.3091 180.297 51.6314 180.4 41.9365 176.723C27.9543 171.42 19.1439 133.017 52.663 127.029Z" fill="#DEE9FF" />
                 <path d="M184.462 197.807L146.371 160.168L138.828 167.801L176.92 205.44L184.462 197.807Z" fill="#699CFF" />

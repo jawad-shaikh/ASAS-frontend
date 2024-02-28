@@ -2,11 +2,20 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useEffect } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form';
 import FormInput from './common/FormInput';
-import { childSchema, profileSchema } from '@/validations';
 import { z } from 'zod';
 import Button from './common/Button';
 import { myChildren, updateChildren } from '@/api';
+import toast from 'react-hot-toast';
 
+
+export const childSchema = z.object({
+    children: z.array(
+        z.object({
+            fullName: z.string().min(2).max(50).optional(),
+            birthDay: z.string().optional()
+        })
+    )
+});
 type FormValues = z.infer<typeof childSchema>;
 
 
@@ -16,10 +25,9 @@ const Child = () => {
         control,
         handleSubmit,
         formState: { errors },
-        setValue, // Import setValue from react-hook-form
     } = useForm<FormValues>({
         resolver: zodResolver(childSchema),
-       
+
     });
 
     const { fields, append } = useFieldArray({
@@ -27,25 +35,30 @@ const Child = () => {
         name: "children",
     });
 
-    console.log(errors)
     const onSubmit = async (formData: FormValues) => {
-        console.log(formData.children)
+        const loadingToastId = toast.loading('Updating children...');
+
+        const childrenData = formData.children.map((child) => ({
+            ...child,
+            birthDay: child.birthDay ? new Date(child.birthDay).toISOString() : null
+        }));
         try {
-            const { data } = await updateChildren(formData.children);
-            console.log(formData, data);
+            const { data } = await updateChildren(childrenData);
+            getData()
+            toast.success("Children updated", { id: loadingToastId });
         } catch (error: any) {
             console.log(error);
+            toast.error(error.response.data.error, { id: loadingToastId });
         }
     };
 
     const getData = async () => {
         try {
             const { data } = await myChildren();
-            console.log(data)
-            Object.keys(data.data).forEach((key: any) => {
-                console.log(key, data.data[key]);
-                // Check if setValue is defined before using it
-                setValue(key, data.data[key]);
+            console.log(data.data)
+            // Iterate over each child in the response
+            data.data.forEach((child: any, index: number) => {
+                append({ fullName: child.fullName, birthDay: child.birthDay });
             });
         } catch (error: any) {
             console.log(error);
@@ -89,7 +102,7 @@ const Child = () => {
 
                     <div className="flex flex-col gap-6 mt-6">
                         <button type="button" className="text-primary font-medium" onClick={() => {
-                            append({ childName: "", childBirthDate: "" });
+                            append({ fullName: "", birthDay: "" });
                         }}>Add more Children</button>
 
                         <Button size={"large"}>Submit</Button>
