@@ -51,7 +51,7 @@ export default function NewActivityPage() {
         } else if (key === "thumbnail") {
           // Append image file
           formData.append("thumbnail", data.thumbnail[0]);
-        } else if (key !== "fullCoursePrice") {
+        } else if (key !== "fullCoursePrice" && key !== "singleSessionPrice") {
           console.log(key, value)
           formData.append(key, value?.toString() || "");
         }

@@ -9,8 +9,7 @@ import { usePlacesWidget } from 'react-google-autocomplete';
 import GoogleMap from 'google-maps-react-markers'
 import Marker from './Marker';
 const page = ({ params }: any) => {
-    console.log(params.search);
-
+    const [search, setSearch] = useState(decodeURIComponent(params.search));
     const { ref, autocompleteRef } = usePlacesWidget({
         apiKey: 'AIzaSyALid_clJdG76KwqFhqa5qvNqRb8dTt-h8',
         onPlaceSelected: (place) => {
@@ -19,6 +18,15 @@ const page = ({ params }: any) => {
             console.log("formattedAddress", place.formatted_address)
         }
     });
+
+    const categoryOptions = [
+        { name: 'Music', value: 'MUSIC' },
+        { name: 'Art', value: 'ART' },
+        { name: 'Cooking', value: 'COOKING' },
+        { name: 'Robots', value: 'ROBOTS' },
+        { name: 'Language', value: 'LANGUAGE' },
+        { name: 'Sports', value: 'SPORTS' },
+    ];
 
     const monthOptions = [
         { name: 'January', value: 'january' },
@@ -100,7 +108,10 @@ const page = ({ params }: any) => {
 
 
     const getData = async () => {
-        const { data } = await axios.get("https://cpxrkdz4-6600.inc1.devtunnels.ms/api/v1/activities");
+        const { data } = await axios.post("https://cpxrkdz4-6600.inc1.devtunnels.ms/api/v1/activities/fetch", {
+            searchQuery:search
+        });
+        console.log(data.data)
         setData(data.data)
     }
 
@@ -128,8 +139,8 @@ const page = ({ params }: any) => {
                 <div className='grid grid-cols-1 gap-4'>
 
                     <div className='flex items-center gap-2 px-2 py-2 pl-4 text-sm font-medium rounded-full border border-black text-black'>
-                        <input ref={ref as unknown as LegacyRef<HTMLInputElement>} className='outline-none w-full' />
-                        <button onClick={() => {}}>
+                        <input value={search} onChange={(e) => setSearch(e.target.value)} className='outline-none w-full' />
+                        <button onClick={() => {setSearch("")}}>
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M10 18C12.1217 18 14.1566 17.1571 15.6569 15.6569C17.1571 14.1566 18 12.1217 18 10C18 7.87827 17.1571 5.84344 15.6569 4.34315C14.1566 2.84285 12.1217 2 10 2C7.87827 2 5.84344 2.84285 4.34315 4.34315C2.84285 5.84344 2 7.87827 2 10C2 12.1217 2.84285 14.1566 4.34315 15.6569C5.84344 17.1571 7.87827 18 10 18ZM8.707 7.293C8.5184 7.11084 8.2658 7.01005 8.0036 7.01233C7.7414 7.0146 7.49059 7.11977 7.30518 7.30518C7.11977 7.49059 7.0146 7.7414 7.01233 8.0036C7.01005 8.2658 7.11084 8.5184 7.293 8.707L8.586 10L7.293 11.293C7.19749 11.3852 7.12131 11.4956 7.0689 11.6176C7.01649 11.7396 6.9889 11.8708 6.98775 12.0036C6.9866 12.1364 7.0119 12.2681 7.06218 12.391C7.11246 12.5139 7.18671 12.6255 7.2806 12.7194C7.3745 12.8133 7.48615 12.8875 7.60905 12.9378C7.73194 12.9881 7.86362 13.0134 7.9964 13.0123C8.12918 13.0111 8.2604 12.9835 8.3824 12.9311C8.50441 12.8787 8.61475 12.8025 8.707 12.707L10 11.414L11.293 12.707C11.4816 12.8892 11.7342 12.99 11.9964 12.9877C12.2586 12.9854 12.5094 12.8802 12.6948 12.6948C12.8802 12.5094 12.9854 12.2586 12.9877 11.9964C12.99 11.7342 12.8892 11.4816 12.707 11.293L11.414 10L12.707 8.707C12.8892 8.5184 12.99 8.2658 12.9877 8.0036C12.9854 7.7414 12.8802 7.49059 12.6948 7.30518C12.5094 7.11977 12.2586 7.0146 11.9964 7.01233C11.7342 7.01005 11.4816 7.11084 11.293 7.293L10 8.586L8.707 7.293Z" fill="#7A869A" />
                             </svg>
@@ -159,7 +170,7 @@ const page = ({ params }: any) => {
                 </div>
                     <CustomFilterButton name="Age" options={monthOptions} onChange={handleMonthChange} />
                     <CustomFilterButton name="Booking Type" options={monthOptions} onChange={handleMonthChange} />
-                    <CustomFilterButton name="Category" options={monthOptions} onChange={handleMonthChange} />
+                    <CustomFilterButton name="Category" options={categoryOptions} onChange={handleMonthChange} />
                     <CustomFilterButton name="Month" options={monthOptions} onChange={handleMonthChange} />
                     <CustomFilterButton name="Day" options={dayOptions} onChange={handleDayChange} />
                     <CustomFilterButton name="Time" options={timeOptions} onChange={handleTimeChange} />
@@ -195,7 +206,7 @@ const page = ({ params }: any) => {
                     {
                         data.map((item: any) => (
                             <Link key={item} href="" className="flex items-start gap-8 bg-white border rounded-xl">
-                                <img src="/thumbnail.png" className='max-w-[400px]' />
+                                <img src={item.thumbnailPicture} className='max-w-[400px]' />
                                 <div className='w-full mt-4 mr-4'>
                                     <div className="flex justify-between items-center w-full mb-4">
                                         <p className='text-[#5641DA] font-semibold'>{item.category}</p>

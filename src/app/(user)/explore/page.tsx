@@ -4,8 +4,8 @@ import axios from "axios";
 
 export default async function UserPage() {
   const organizedData = {} as any;
-  const { data } = await axios.get(
-    "https://cpxrkdz4-6600.inc1.devtunnels.ms/api/v1/activities"
+  const { data } = await axios.post(
+    "https://cpxrkdz4-6600.inc1.devtunnels.ms/api/v1/activities/fetch"
   );
 
   data.data.forEach((item: any) => {
@@ -42,12 +42,12 @@ export default async function UserPage() {
               products={organizedData.MUSIC}
             />
             <ProductSlider
-              title="Music Activities"
+              title="Language Activities"
               description="Drop-in online classes for the whole family"
               products={organizedData.MUSIC}
             />
             <ProductSlider
-              title="Music Activities"
+              title="Sports Activities"
               description="Drop-in online classes for the whole family"
               products={organizedData.MUSIC}
             />

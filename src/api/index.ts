@@ -53,7 +53,6 @@ export const approveOrder = (id: any) => API.post(`/orders/${id}/approve`);
 
 export const rejectOrder = (id: any) => API.post(`/orders/${id}/reject`);
 
-
 export const getActivity = (id: any) => API.get(`/activities/${Number(id)}`);
 
 export const createActivity = (data: any) => API.post("/activities", data);
@@ -62,10 +61,10 @@ export const deleteActivity = (id: any) => API.delete(`/activities/${id}`);
 
 export const updateActivity = (id: any, data: any) => API.patch(`/activities/${id}`, data);
 
-
+export const getReports = (user: any) => API.get(`/reports/${user}`);
 
 export const getAllActivity = (id: number) =>
-  API.get(`/activities?activityProviderId=${id}`);
+  API.post(`/activities/fetch?activityProviderId=${id}`);
 
 export const updateProvider = (id: number, data: any) =>
   API.post(`/activity-providers/status/${id}`, data);

@@ -21,9 +21,8 @@ export default async function UserPage({ params }: any) {
 
 
 
-  const { id, thumbnailPicture, title, capacity, averageRating, numberOfRatings, ActivityReview, ageRangeStart, ageRangeEnd, activityStartDate, activityEndDate, activityStartTime, activityEndTime,
+  const { id, thumbnailPicture, title, description,capacity, averageRating, numberOfRatings, ActivityReview, ageRangeStart, ageRangeEnd, activityStartDate, activityEndDate, activityStartTime, activityEndTime,
     isFullCourse, isSingleSession, fullCoursePrice, singleSessionPrice} = res;
-    console.log({isFullCourse, isSingleSession, fullCoursePrice, singleSessionPrice})
 
   console.log(res)
   return (
@@ -71,8 +70,9 @@ export default async function UserPage({ params }: any) {
               </div>
 
               <div>
-                <h2 className="font-medium my-4">Class Experience</h2>
-                <h3 className="text-sm font-medium">6 Lessons</h3>
+                <h2 className="font-medium my-4">Description</h2>
+                <p>{description}</p>
+                {/* <h3 className="text-sm font-medium">6 Lessons</h3>
 
                 <ol className="list-decimal list-inside my-4 font-thin text-sm space-y-1">
                   <li>
@@ -113,7 +113,7 @@ export default async function UserPage({ params }: any) {
                   <li>
                     Create Digital assets using Design tools
                   </li>
-                </ol>
+                </ol> */}
               </div>
 
 

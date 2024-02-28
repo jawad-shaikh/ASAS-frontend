@@ -14,7 +14,7 @@ const schema = z.object({
     firstName: z.string().nonempty({ message: 'First name is required' }),
     lastName: z.string().nonempty({ message: 'Last name is required' }),
     businessName: z.string().nonempty({ message: 'Business name is required' }),
-    website: z.string().url({ message: 'Invalid website URL' }),
+    website: z.string().nonempty({ message: 'Invalid website URL' }),
     phoneNumber: z.string().nonempty({ message: 'Phone number is required' }),
   });
 

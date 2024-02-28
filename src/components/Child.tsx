@@ -52,13 +52,26 @@ const Child = () => {
         }
     };
 
+    function isoStringToDateInput(isoString: string) {
+        // Step 1: Create a Date object from the ISO string
+        const date = new Date(isoString);
+    
+        // Step 2: Format date for input
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed, so add 1
+        const day = String(date.getDate()).padStart(2, '0');
+    
+        // Return formatted date string
+        return `${year}-${month}-${day}`;
+    }
+
     const getData = async () => {
         try {
             const { data } = await myChildren();
             console.log(data.data)
             // Iterate over each child in the response
             data.data.forEach((child: any, index: number) => {
-                append({ fullName: child.fullName, birthDay: child.birthDay });
+                append({ fullName: child.fullName, birthDay: isoStringToDateInput(child.birthDay) });
             });
         } catch (error: any) {
             console.log(error);

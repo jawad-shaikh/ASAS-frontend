@@ -70,7 +70,7 @@ const AdminSideMenu = () => {
 
           <li className="flex items-center p-4 text-[#4B5563] font-medium text-sm">Account</li>
 
-          <li>
+          {/* <li>
             <Link
               href="/admin/account"
               className={`flex items-center gap-4 px-4 py-2 text-[#4B5563] ${pathname === "/admin/account" ? "bg-light-gray" : "hover:bg-light-gray"} rounded-lg`}
@@ -79,7 +79,7 @@ const AdminSideMenu = () => {
 
               <span className="font-medium"> Profile </span>
             </Link>
-          </li>
+          </li> */}
 
           <li>
             <button
