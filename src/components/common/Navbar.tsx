@@ -47,7 +47,7 @@ const Navbar = ({ user }: any) => {
         )}
 
         <div className="flex flex-col items-end">
-          <p className="font-semibold">Hi, {user?.fullName}</p>
+          <p className="font-semibold">Hi, {user?.fullName ? user?.fullName : user?.firstName +" "+ user?.lastName}</p>
           <p className="text-xs">{user?.role === "ACTIVITY_PROVIDER" ? "PROVIDER" : user?.role}</p>
         </div>
         {/* <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">

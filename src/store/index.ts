@@ -36,29 +36,8 @@ const useAuthStore = create<AuthState>((set) => {
       set({ isAuthenticated: false, user: null });
     },
     updateUser: (userData: User) => {
-      set((state: any) => {
-        // Get the previous user data from the state
-        const prevUserData = state.user;
-    
-        // Merge the previous user data with the new userData
-        const updatedUserData = { ...prevUserData };
-    
-        // Check if fullName is available in userData and update if available
-        if (userData.fullName) {
-          updatedUserData.fullName = userData.fullName;
-        }
-    
-        // Check if profilePicture is available in userData and update if available
-        if (userData.profilePicture) {
-          updatedUserData.profilePicture = userData.profilePicture;
-        }
-    
-        // Update localStorage with the updated userData
-        localStorage.setItem('userData', JSON.stringify(updatedUserData));
-    
-        // Update state with the updated userData
-        return { ...state, user: updatedUserData };
-      });
+      localStorage.setItem('userData', JSON.stringify(userData));
+      set((state) => ({ ...state, user: userData }));
     },
     
   };

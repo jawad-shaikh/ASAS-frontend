@@ -3,6 +3,7 @@ import { meProvider, updateMeProvider } from "@/api";
 import TableHeader from "@/components/TableHeader";
 import Button from "@/components/common/Button";
 import FormInput from "@/components/common/FormInput";
+import useAuthStore from "@/store";
 import { providerAccountFormSchema } from "@/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
@@ -21,6 +22,7 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 export default function ProfilePage() {
+    const {updateUser} = useAuthStore()
     const [data, setData] = useState<FormValues | null>(null); // Initialize data state
 
     const {
@@ -50,7 +52,7 @@ export default function ProfilePage() {
     const getData = async () => {
         try {
             const response = await meProvider();
-            console.log(response.data.data);
+            updateUser(response.data.data);
             setData(response.data.data); // Set data state with response data
         } catch (error: any) {
             console.error('An error occurred while fetching data:', error);
