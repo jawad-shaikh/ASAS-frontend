@@ -9,7 +9,7 @@ const BannerSearch = () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault(); // Prevent default form submission behavior
-    router.push('/search/'+search); // Log the value to the console
+    router.push('/search?search='+search); // Log the value to the console
   };
 
   return (

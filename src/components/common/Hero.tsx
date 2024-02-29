@@ -10,6 +10,7 @@ import language from "@/assets/language.svg"
 import music from "@/assets/music.svg"
 import sports from "@/assets/sports.svg"
 import { useModalStore } from '@/store'
+import Link from 'next/link'
 
 const Hero = () => {
   const {setSignUpOpen} = useModalStore()
@@ -23,48 +24,48 @@ const Hero = () => {
       </div>
       <BannerSearch />
       <div className="mt-14 text-center flex flex-wrap items-start justify-center gap-20">
-        <div>
+        <Link className="block" href={`/search?category=Music`}>
           <Image src={music} height={64} width={64} alt="Music Icon" />
           <h2 className="mt-4">
             Music
           </h2>
-        </div>
-        <div>
+        </Link>
+        <Link className="block" href={`/search?category=Art`}>
           <Image src={art} height={64} width={64} alt="Art Icon" />
           <h2 className="mt-4">
             Art
           </h2>
-        </div>
+        </Link>
 
-        <div>
+        <Link className="block" href={`/search?category=Cooking`}>
           <Image src={cooking} height={64} width={64} alt="Cooking Icon" />
           <h2 className="mt-4">
             Cooking
           </h2>
-        </div>
+        </Link>
 
-        <div>
+        <Link className="block" href={`/search?category=Robots`}>
           <Image src={robots} height={64} width={64} alt="Robots Icon" />
           <h2 className="mt-4">
             Robots
           </h2>
-        </div>
+        </Link>
 
-        <div>
+        <Link className="block" href={`/search?category=Language`}>
           <Image src={language} height={64} width={64} alt="Language Icon" />
           <h2 className="mt-4">
             Language
           </h2>
-        </div>
+        </Link>
 
 
 
-        <div>
+        <Link className="block" href={`/search?category=Sports`}>
           <Image src={sports} height={64} width={64} alt="Sports Icon" />
           <h2 className="mt-4">
             Sports
           </h2>
-        </div>
+        </Link>
       </div>
     </div>
     <Image src="/banner.svg" height={800} width={800} quality={100} alt="Banner Image" className="absolute inset-0 w-full pointer-events-none" />

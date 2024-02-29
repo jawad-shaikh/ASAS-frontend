@@ -8,7 +8,7 @@ export default async function UserPage() {
     "https://cpxrkdz4-6600.inc1.devtunnels.ms/api/v1/activities/fetch"
   );
 
-  data.data.forEach((item: any) => {
+  data.data.activities.forEach((item: any) => {
     if (!organizedData[item.category]) {
       organizedData[item.category] = [];
     }
