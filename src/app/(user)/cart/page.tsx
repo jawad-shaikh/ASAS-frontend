@@ -19,7 +19,7 @@ export default function UserPage() {
         {
           items.length > 0 ? (
             <div className="grid grid-cols-3 items-startS gap-8 mt-8 items-start">
-              <div className="col-span-2">
+              <div className="col-span-3 lg:col-span-2">
                 {
                   items.map(({ activity, attendeeIds, sessionDates }) => (
                     <div key={activity.id} className="relative flex items-start gap-8 bg-white p-4 rounded-xl">
@@ -100,7 +100,7 @@ export default function UserPage() {
                   ))
                 }
               </div>
-              <div className="bg-white rounded-xl p-6 flex flex-col gap-4 divide-y">
+              <div className="bg-white rounded-xl p-6 flex flex-col gap-4 divide-y lg:col-span-1 col-span-3">
                 <div>
                   <div>
                     <h2 className="font-medium my-4">Subtotal <span className="text-primary font-medium text-2xl">${calculateTotalPrice(calculateItemPrices(items))}</span></h2>

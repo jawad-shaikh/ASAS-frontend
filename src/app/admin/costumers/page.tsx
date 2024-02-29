@@ -26,7 +26,7 @@ export default function CostumersPage() {
       header: () => "Full Name",
       cell: (props) => (
         <div className="flex items-center justify-start gap-4">
-          <img src={'https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg'} height={30} width={30} className="rounded-full" alt={props.row.original.fullName} />
+          <img src={props.row.original.profilePicture || 'https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg'} height={30} width={30} className="rounded-full" alt={props.row.original.fullName} />
           <p>{props.row.original.fullName}</p>
         </div>
       ),

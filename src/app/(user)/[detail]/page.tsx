@@ -29,10 +29,13 @@ export default async function UserPage({ params }: any) {
     <main className="bg-light-gray relative py-20">
       <div className="container">
         <h1 className='text-3xl font-medium text-center'>{title}</h1>
-        <div className="grid grid-cols-3 items-startS gap-8 mt-8 items-start">
-          <div className="col-span-2">
-            <img src={thumbnailPicture} height={500} width={500} alt="Thumbnail" className="w-full h-auto" />
+        <div className="grid grid-cols-3 gap-8 mt-8 items-start">
+          <div className="col-span-3 lg:col-span-2">
+            <img src={thumbnailPicture} height={500} width={500} alt="Thumbnail" className="w-full h-auto rounded-lg" />
+            <div className="block lg:hidden mt-4">
+            <CartAside product={res} />
 
+            </div>
             <div className="divide-y">
               <div>
                 <h2 className="font-medium my-4">Classes Details</h2>
@@ -144,7 +147,10 @@ export default async function UserPage({ params }: any) {
             </div>
 
           </div>
+          <div className="hidden lg:block">
           <CartAside product={res} />
+            
+          </div>
         </div>
       </div>
     </main>

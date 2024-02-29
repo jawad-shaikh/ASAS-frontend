@@ -90,8 +90,7 @@ export default function ActivityPage() {
 
   const getData = async () => {
     const { data } = await getAllActivity(user?.userId || 0);
-    console.log(data.data)
-    setTable(data.data)
+    setTable(data.data.activities)
   }
 
   useEffect(() => {

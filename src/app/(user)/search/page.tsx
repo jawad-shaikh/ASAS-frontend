@@ -7,7 +7,7 @@ import Link from 'next/link';
 import React, { LegacyRef, useEffect, useRef, useState } from 'react'
 import { usePlacesWidget } from 'react-google-autocomplete';
 import GoogleMap from 'google-maps-react-markers'
-import Marker from './[search]/Marker';
+import Marker from './Marker';
 import RangeFilter from '@/components/filter/RangeFilter';
 import TimeRangeSlider from '@/components/filter/RangeFilter';
 import CustomAgeFilterButton from '@/components/filter/CustomAgeFilterButton';
@@ -255,10 +255,10 @@ const page = () => {
                 <section className='flex flex-col gap-8 mt-8'>
                     {
                         data.map((item: any) => (
-                            <Link key={item} href="" className="flex items-start gap-8 bg-white border rounded-xl">
-                                <img src={item.thumbnailPicture} className='max-w-[400px]' />
-                                <div className='w-full mt-4 mr-4'>
-                                    <div className="flex justify-between items-center w-full mb-4">
+                            <Link key={item} href={`/${item.id}`} className="flex md:flex-row flex-col items-start gap-4 bg-white border overflow-hidden rounded-xl">
+                                <img src={item.thumbnailPicture} className='w-full md:max-w-[400px] h-full object-cover' />
+                                <div className='w-full p-4'>
+                                    <div className="flex justify-between items-center mb-4">
                                         <p className='text-[#5641DA] font-semibold'>{item.category}</p>
                                         <p className='font-thin flex items-center gap-2'>
                                             <Icon.star />

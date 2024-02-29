@@ -15,7 +15,6 @@ const UserNavbar = () => {
   const { logout, user, isAuthenticated } = useAuthStore();
   const { signUpOpen, signInOpen, signOutOpen, setSignUpOpen, setSignInOpen, setSignOutOpen } = useModalStore();
 
-  console.log(user)
 
   return (
     <>
@@ -68,10 +67,10 @@ const UserNavbar = () => {
             <div className='flex items-center gap-6'>
               <Link href="/provider" className='text-sm hover:underline'>Activity Provider?</Link>
               <div className='flex items-center gap-3'>
-                <Button onClick={() => setSignInOpen(true)} variant={"outline"}>Log In</Button>
+                <Button className='hidden sm:block' onClick={() => setSignInOpen(true)} variant={"outline"}>Log In</Button>
                 <Button onClick={() => setSignUpOpen(true)}>Sign Up</Button>
               </div>
-              <button>
+              <button className='hidden sm:block'>
                 <Icon.cart className='h-[25px] w-[25px]' />
               </button>
             </div>
