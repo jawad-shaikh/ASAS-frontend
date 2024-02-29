@@ -14,6 +14,7 @@ interface AuthState {
   user: User | null;
   login: (token: string, userData: User) => void;
   logout: () => void;
+  updateUser: (userData: User) => void;
 }
 
 const useAuthStore = create<AuthState>((set) => {
@@ -33,6 +34,29 @@ const useAuthStore = create<AuthState>((set) => {
       localStorage.removeItem('userData');
       window.location.assign("http://localhost:3000");
       set({ isAuthenticated: false, user: null });
+    },
+    updateUser: (userData: User) => {
+
+      set((state) => {
+        // Get the previous user data from the state
+        const prevUserData = state.user;
+    
+        
+        // Merge the previous user data with the new fullName if available
+        const updatedUserData: User = {
+          ...prevUserData,
+          ...(userData.fullName && { fullName: userData.fullName }),
+        };
+    
+        // Update localStorage with the merged userData
+        localStorage.setItem('userData', JSON.stringify(updatedUserData));
+    
+        // Update state with the merged userData
+        return { ...state, user: updatedUserData };
+      });
+
+      localStorage.setItem('userData', JSON.stringify(userData));
+      set((state) => ({ ...state, user: userData }));
     },
   };
 });

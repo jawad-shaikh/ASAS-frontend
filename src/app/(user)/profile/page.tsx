@@ -3,6 +3,7 @@ import { me, updateProfile, updateProfilePicture } from "@/api";
 import Child from "@/components/Child";
 import Button from "@/components/common/Button";
 import FormInput from "@/components/common/FormInput";
+import useAuthStore from "@/store";
 import { profileSchema } from "@/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
@@ -24,7 +25,7 @@ type FormValues = z.infer<typeof schema>;
 
 
 export default function ProfilePage() {
-
+const {updateUser} = useAuthStore()
   const {
     register,
     handleSubmit,
@@ -40,7 +41,7 @@ export default function ProfilePage() {
     const { profilePicture, ...formDataWithoutProfilePicture } = formData;
     console.log(profilePicture)
     try {
-      if(profilePicture[0]){
+      if(profilePicture?.length > 0){
         const formDataToSend = new FormData();
         formDataToSend.append('profile', profilePicture[0]);
         await updateProfilePicture(formDataToSend)
@@ -53,13 +54,14 @@ export default function ProfilePage() {
       getData()
     } catch (error: any) {
       console.log(error);
-      toast.error(error.response.data.error, { id: loadingToastId });
+      toast.error((error.response?.data.error || "Error"), { id: loadingToastId });
     }
   };
 
   const getData = async () => {
     try {
       const { data } = await me();
+      updateUser(data.data)
       Object.keys(data.data).forEach((key: any) => {
         // console.log(key, data.data[key])
         return setValue(key, data.data[key]);

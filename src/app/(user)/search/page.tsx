@@ -14,15 +14,13 @@ import CustomAgeFilterButton from '@/components/filter/CustomAgeFilterButton';
 import CustomTimeFilterButton from '@/components/filter/RangeFilter';
 import MultiRangeSlider from '@/components/filter/RangeFilter';
 import { useSearchParams } from 'next/navigation';
-const page = ({ props }: any) => {
-    console.log(props, "props")
+const page = () => {
 
     const searchParams = useSearchParams();
 
     const query = searchParams.get('search')
     const category = searchParams.get('category')
 
-     
     const [search, setSearch] = useState(decodeURIComponent(query || ""));
 
     const { ref, autocompleteRef } = usePlacesWidget({
@@ -79,11 +77,11 @@ const page = ({ props }: any) => {
 
     const [selectedBookingOptions, setSelectedBookingOptions] = useState<any[]>([]);
 
-    const [selectedCategoryOptions, setSelectedCategoryOptions] = useState<any[]>([]);
+    const [selectedCategoryOptions, setSelectedCategoryOptions] = useState<any[]>(category ? [{name:category, value:category.toUpperCase()}] : []);
 
     const [selectedMonthOptions, setSelectedMonthOptions] = useState<any[]>([]);
     // const [selectedDayOptions, setSelectedDayOptions] = useState<any[]>([]);
-    const [selectedTimeOptions, setSelectedTimeOptions] = useState<any[]>([]);
+    const [selectedTimeOptions, setSelectedTimeOptions] = useState<{ startTime: string, endTime: string }>({ startTime: "00", endTime: "24" });
     const [data, setData] = useState<any[]>([]);
     const [coordinates, setCoordinates] = useState<any[]>([]);
 
@@ -135,7 +133,7 @@ const page = ({ props }: any) => {
     //     console.log('Selected day options:', selectedOptions);
     // };
 
-    const handleTimeChange = (selectedOptions: any[]) => {
+    const handleTimeChange = (selectedOptions: any) => {
         setSelectedTimeOptions(selectedOptions);
         // Handle time filter change logic here
         console.log('Selected time options:', selectedOptions);
@@ -153,35 +151,36 @@ const page = ({ props }: any) => {
     }
 
     const getData = async () => {
-        console.log(ageArr, "ageArr")
-       try {
-        const { data } = await axios.post("https://cpxrkdz4-6600.inc1.devtunnels.ms/api/v1/activities/fetch", {
-            age: flattenArray(ageArr.map(item => isNaN(item) ? item.split('-').map((num: string) => Number(num)) : item)),
-            searchQuery: search,
-            category: selectedCategoryOptions.map(item => item.value),
-            bookingType: selectedBookingOptions.map(item => item.value),
-            months: selectedMonthOptions.length > 0 ? selectedMonthOptions.map(item => item.value) : [],
-            ...selectedTimeOptions
-            // day:selectedDayOptions.map(item => item.value),
-            time:selectedTimeOptions.map(item => item.value),
-        });
-        console.log(data.data)
-        setData(data.data.activities)
-        setCoordinates(data.data.coordinates)
-       } catch (error) {
-    console.log(error)
-       }
-        
+        try {
+            console.log(selectedCategoryOptions, "selectedCategoryOptions")
+            const { data } = await axios.post("https://cpxrkdz4-6600.inc1.devtunnels.ms/api/v1/activities/fetch", {
+                age: flattenArray(ageArr.map(item => isNaN(item) ? item.split('-').map((num: string) => Number(num)) : item)),
+                searchQuery: search,
+                category: selectedCategoryOptions.map(item => item.value),
+                bookingType: selectedBookingOptions.map(item => item.value),
+                months: selectedMonthOptions.length > 0 ? selectedMonthOptions.map(item => item.value) : [],
+                startTime: `${selectedTimeOptions.startTime.slice(0, 2)}`,
+                endTime: `${selectedTimeOptions.endTime.slice(0, 2)}`
+
+            });
+            console.log(data.data)
+            console.log(selectedCategoryOptions, "data")
+            setData(data.data.activities)
+            setCoordinates(data.data.coordinates)
+        } catch (error) {
+            console.log(error)
+        }
+
     }
 
 
     // Map options
-    const mapOptions = {};
+    const mapOptions = { };
 
 
     useEffect(() => {
         getData()
-    }, [ageArr, selectedBookingOptions, selectedCategoryOptions,selectedMonthOptions, selectedTimeOptions,search])
+    }, [ageArr, selectedBookingOptions, selectedCategoryOptions, selectedMonthOptions, selectedTimeOptions, search])
 
     return (
         <>
@@ -230,8 +229,8 @@ const page = ({ props }: any) => {
                 <section className='mt-8'>
                     <GoogleMap
                         apiKey="AIzaSyALid_clJdG76KwqFhqa5qvNqRb8dTt-h8"
-                        defaultCenter={{ lat: coordinates[0]?.lat, lng: coordinates[0]?.lng }}
-                        defaultZoom={20}
+                        defaultCenter={{ lat: 38.2526647, lng: -85.7584557 }}
+                        defaultZoom={6}
                         options={mapOptions}
                         mapMinHeight="400px"
                         onGoogleApiLoaded={onGoogleApiLoaded}
