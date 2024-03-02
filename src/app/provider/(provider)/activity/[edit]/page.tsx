@@ -43,26 +43,51 @@ export default function NewActivityPage({ params }: any) {
     const loadingToastId = toast.loading("Operation in progress...");
     try {
       const formData = new FormData();
-      Object.entries(data).forEach(([key, value]: any) => {
+      for (const [key, value] of Object.entries(data)) {
         if (key === "activityStartTime" || key === "activityEndTime") {
           // Convert time to ISO string format
-          const [hours, minutes] = value.split(":");
+          const [hours, minutes] = (value as string).split(":");
           const today = new Date();
           today.setHours(parseInt(hours, 10), parseInt(minutes, 10), 0, 0);
           formData.append(key, today.toISOString());
         } else if (key === "activityStartDate" || key === "activityEndDate") {
           // Convert date to ISO string format
-          formData.append(key, new Date(value as any).toISOString());
+          formData.append(key, new Date(value as string).toISOString());
         } else if (key === "thumbnail") {
-          // Convert date to ISO string format
-          return;
-        } else {
-          formData.append(key, value as any);
+          // Append image file
+          formData.append("thumbnail", data.thumbnail[0]);
+        } else if (key !== "fullCoursePrice" && key !== "singleSessionPrice") {
+          console.log(key, value)
+          formData.append(key, value?.toString() || "");
         }
-      });
-      formData.append("isFullCourse", isFullCourse as any);
-      formData.append("isSingleSession", isSingleSession as any);
+      }
 
+      formData.append("isFullCourse", isFullCourse.toString());
+      formData.append("isSingleSession", isSingleSession.toString());
+
+      // Conditionally append fullCoursePrice and singleSessionPrice
+      if (!isFullCourse) {
+        formData.append("fullCoursePrice", "0");
+      } else {
+        if(data.fullCoursePrice){
+          formData.append("fullCoursePrice", data.fullCoursePrice.toString());
+        }else {
+          toast.error("Please Enter Full Course Price", { id: loadingToastId })
+          return false;
+        }
+      }
+
+      if (!isSingleSession) {
+        formData.append("singleSessionPrice", "0");
+      } else {
+        if(data.singleSessionPrice){
+          formData.append("singleSessionPrice", data.singleSessionPrice.toString());
+        }else {
+          toast.error("Please Enter Single Session Price", { id: loadingToastId })
+
+          return false;
+        }
+      }
       // Append image file
       if (data?.thumbnail?.length) formData.append("thumbnail", data?.thumbnail[0]);
 

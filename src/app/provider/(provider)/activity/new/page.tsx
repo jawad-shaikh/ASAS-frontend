@@ -64,13 +64,24 @@ export default function NewActivityPage() {
       if (!isFullCourse) {
         formData.append("fullCoursePrice", "0");
       } else {
-        formData.append("fullCoursePrice", data.fullCoursePrice.toString());
+        if(data.fullCoursePrice){
+          formData.append("fullCoursePrice", data.fullCoursePrice.toString());
+        }else {
+          toast.error("Please Enter Full Course Price", { id: loadingToastId })
+          return false;
+        }
       }
 
       if (!isSingleSession) {
         formData.append("singleSessionPrice", "0");
       } else {
-        formData.append("singleSessionPrice", data.singleSessionPrice.toString());
+        if(data.singleSessionPrice){
+          formData.append("singleSessionPrice", data.singleSessionPrice.toString());
+        }else {
+          toast.error("Please Enter Single Session Price", { id: loadingToastId })
+
+          return false;
+        }
       }
 
       const response = await createActivity(formData);
