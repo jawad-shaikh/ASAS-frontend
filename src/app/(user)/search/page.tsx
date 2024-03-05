@@ -14,12 +14,8 @@ import CustomAgeFilterButton from '@/components/filter/CustomAgeFilterButton';
 import CustomTimeFilterButton from '@/components/filter/RangeFilter';
 import MultiRangeSlider from '@/components/filter/RangeFilter';
 import { useSearchParams } from 'next/navigation';
-const page = () => {
 
-    const searchParams = useSearchParams();
-
-    const query = searchParams.get('search')
-    const category = searchParams.get('category')
+const page = ({searchParams: {query, category}}: {searchParams: any}) => {
 
     const [search, setSearch] = useState(decodeURIComponent(query || ""));
 
