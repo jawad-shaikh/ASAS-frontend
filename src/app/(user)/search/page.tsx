@@ -149,7 +149,7 @@ const page = ({searchParams: {query, category}}: {searchParams: any}) => {
     const getData = async () => {
         try {
             console.log(selectedCategoryOptions, "selectedCategoryOptions")
-            const { data } = await axios.post("https://cpxrkdz4-6600.inc1.devtunnels.ms/api/v1/activities/fetch", {
+            const { data } = await axios.post(`${process.env.NEXT_PUBLIC_URL}/api/v1/activities/fetch`, {
                 age: flattenArray(ageArr.map(item => isNaN(item) ? item.split('-').map((num: string) => Number(num)) : item)),
                 searchQuery: search,
                 category: selectedCategoryOptions.map(item => item.value),
