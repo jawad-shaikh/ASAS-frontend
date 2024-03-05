@@ -1,5 +1,5 @@
-import { Product } from '@/types';
-import {create} from 'zustand';
+import { Product } from "@/types";
+import { create } from "zustand";
 
 interface User {
   userId: number;
@@ -18,28 +18,29 @@ interface AuthState {
 }
 
 const useAuthStore = create<AuthState>((set) => {
-  const storedToken = typeof window !== 'undefined' && localStorage.getItem('token');
-  const storedUserData = typeof window !== 'undefined' && localStorage.getItem('userData');
+  const storedToken =
+    typeof window !== "undefined" && localStorage.getItem("token");
+  const storedUserData =
+    typeof window !== "undefined" && localStorage.getItem("userData");
 
   return {
     isAuthenticated: !!storedToken,
     user: storedUserData ? JSON.parse(storedUserData) : null,
     login: (token: string, userData: User) => {
-      localStorage.setItem('token', token);
-      localStorage.setItem('userData', JSON.stringify(userData));
+      localStorage.setItem("token", token);
+      localStorage.setItem("userData", JSON.stringify(userData));
       set({ isAuthenticated: true, user: userData });
     },
     logout: () => {
-      localStorage.removeItem('token');
-      localStorage.removeItem('userData');
-      window.location.assign("http://localhost:3000");
+      localStorage.removeItem("token");
+      localStorage.removeItem("userData");
+      window.location.assign("http://89.116.33.124:5449");
       set({ isAuthenticated: false, user: null });
     },
     updateUser: (userData: User) => {
-      localStorage.setItem('userData', JSON.stringify(userData));
+      localStorage.setItem("userData", JSON.stringify(userData));
       set((state) => ({ ...state, user: userData }));
     },
-    
   };
 });
 
@@ -66,7 +67,7 @@ interface CartState {
 export const useCartStore = create<CartState>((set) => {
   // Load cart items from localStorage if available
   const storedItems =
-    typeof window !== 'undefined' && localStorage.getItem('cartItems');
+    typeof window !== "undefined" && localStorage.getItem("cartItems");
   const initialItems = storedItems ? JSON.parse(storedItems) : [];
 
   return {
@@ -87,7 +88,7 @@ export const useCartStore = create<CartState>((set) => {
             attendeeIds,
             sessionDates,
           };
-          localStorage.setItem('cartItems', JSON.stringify(updatedItems));
+          localStorage.setItem("cartItems", JSON.stringify(updatedItems));
           return { items: updatedItems };
         }
 
@@ -96,7 +97,7 @@ export const useCartStore = create<CartState>((set) => {
           ...state.items,
           { activity, bookingType, attendeeIds, sessionDates },
         ];
-        localStorage.setItem('cartItems', JSON.stringify(newItems));
+        localStorage.setItem("cartItems", JSON.stringify(newItems));
         return { items: newItems };
       }),
     removeFromCart: (activityId) =>
@@ -104,12 +105,11 @@ export const useCartStore = create<CartState>((set) => {
         const updatedItems = state.items.filter(
           (item) => item.activity.id !== activityId
         );
-        localStorage.setItem('cartItems', JSON.stringify(updatedItems));
+        localStorage.setItem("cartItems", JSON.stringify(updatedItems));
         return { items: updatedItems };
       }),
   };
 });
-
 
 interface ModalState {
   signUpOpen: boolean;
@@ -131,4 +131,3 @@ export const useModalStore = create<ModalState & ModalActions>((set) => ({
   setSignInOpen: (isOpen) => set({ signInOpen: isOpen }),
   setSignOutOpen: (isOpen) => set({ signOutOpen: isOpen }),
 }));
-
