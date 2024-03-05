@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosError } from "axios";
 
 // Create Axios instance
 export const API: AxiosInstance = axios.create({
-  baseURL: "https://cpxrkdz4-6600.inc1.devtunnels.ms/api/v1",
+  baseURL: `${process.env.NEXT_PUBLIC_URL}/api/v1`,
   timeout: 5000, // Adjust timeout as needed
 });
 

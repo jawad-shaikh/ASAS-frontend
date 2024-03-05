@@ -5,7 +5,7 @@ import axios from "axios";
 export default async function UserPage() {
   const organizedData = {} as any;
   const { data } = await axios.post(
-    "https://cpxrkdz4-6600.inc1.devtunnels.ms/api/v1/activities/fetch"
+    `${process.env.NEXT_PUBLIC_URL}/api/v1/activities/fetch`
   );
 
   data.data.activities.forEach((item: any) => {

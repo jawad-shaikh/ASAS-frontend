@@ -11,13 +11,13 @@ import { Fragment } from "react";
 export default async function UserPage({ params }: any) {
   let res = null;
   try {
-    const { data } = await axios.get(`https://cpxrkdz4-6600.inc1.devtunnels.ms/api/v1/activities/${params.detail}`)
+    const { data } = await axios.get(`${process.env.NEXT_PUBLIC_URL}/api/v1/activities/${params.detail}`)
     res = data.data
 
   } catch (error: any) {
     notFound();
   }
-  const reviews = await axios.get(`https://cpxrkdz4-6600.inc1.devtunnels.ms/api/v1/activities/${params.detail}/reviews`)
+  const reviews = await axios.get(`${process.env.NEXT_PUBLIC_URL}/api/v1/activities/${params.detail}/reviews`)
 
 
 
