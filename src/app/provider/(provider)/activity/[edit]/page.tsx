@@ -88,8 +88,8 @@ export default function NewActivityPage({ params }: any) {
           return false;
         }
       }
-      // Append image file
-      if (data?.thumbnail?.length) formData.append("thumbnail", data?.thumbnail[0]);
+      // // Append image file
+      // if (data?.thumbnail?.length) formData.append("thumbnail", data?.thumbnail[0]);
 
       const response = await updateActivity(params.edit, formData);
       toast.success(response.data.message, { id: loadingToastId });

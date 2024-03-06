@@ -19,7 +19,7 @@ const CartAside = ({
     const [children, setChildren] = useState([]);
     const [price, setPrice] = useState(0);
     const [open, setOpen] = useState(false);
-    const [bookingOption, setBookingOption] = useState(isFullCourse ? "FULL_COURSE" : "SINGLE_SESSION")
+    const [bookingOption, setBookingOption] = useState("")
 
     const router = useRouter();
 
@@ -97,6 +97,14 @@ const CartAside = ({
         setPrice(calculateItemPrices([{ bookingType: bookingOption, attendeeIds: tempSelectedOptions, sessionDates: selectedDates, activity: product }])[0]);
     }, [bookingOption, selectedDates, tempSelectedOptions])
     
+
+    useEffect(() => {
+        setPrice(0)
+        setSelectedDates([])
+        setTempSelectedOptions([])
+    }, [children])
+    
+    console.log(bookingOption)
     return (
         <>
             <div className="bg-white rounded-xl p-6 flex flex-col gap-4 divide-y">
@@ -205,7 +213,7 @@ const CartAside = ({
                         value={selectedDates}
                         onChange={handleDateChange}
                         multiple
-                        className="w-full"
+                        className="w-full !z-0"
                         showOtherDays
                         minDate={new Date(activityStartDate)}
                         maxDate={new Date(activityEndDate)}
