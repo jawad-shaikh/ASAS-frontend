@@ -8,12 +8,15 @@ export default async function UserPage() {
     `${process.env.NEXT_PUBLIC_URL}/api/v1/activities/fetch`
   );
 
+  
   data.data.activities.forEach((item: any) => {
     if (!organizedData[item.category]) {
       organizedData[item.category] = [];
     }
     organizedData[item.category].push(item);
   });
+
+console.log(organizedData, data)
 
   return (
     <>
