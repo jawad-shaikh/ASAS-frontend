@@ -41,6 +41,8 @@ const SignUpModal = () => {
                 console.error('Registration failed:', res.data.message);
                 console.error('Token or user data not found in response');
             }
+            setSignUpOpen(false)
+
         } catch (error: any) {
             // An error occurred during registration
             console.error('An error occurred during registration:', error);

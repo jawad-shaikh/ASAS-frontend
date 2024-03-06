@@ -44,12 +44,12 @@ export default async function UserPage() {
             <ProductSlider
               title="Language Activities"
               description="Drop-in online classes for the whole family"
-              products={organizedData.MUSIC}
+              products={organizedData.LANGUAGE}
             />
             <ProductSlider
               title="Sports Activities"
               description="Drop-in online classes for the whole family"
-              products={organizedData.MUSIC}
+              products={organizedData.SPORTS}
             />
           </>
         ) : null}

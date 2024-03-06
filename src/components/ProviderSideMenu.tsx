@@ -16,7 +16,7 @@ const ProviderSideMenu = () => {
 
         <ul className="space-y-4">
           <li>
-            <Link href='/admin' className="flex items-center gap-4 px-4 py-2 text-[#4B5563]">
+            <Link href='/provider/dashboard' className="flex items-center gap-4 px-4 py-2 text-[#4B5563]">
               <Icon.home />
               <span className="font-medium"> Dashboard </span>
             </Link>

@@ -1,5 +1,6 @@
 'use client'
 import { getAllOrders, giveReview } from "@/api";
+import EmptyState from "@/components/EmptyState";
 import Button from "@/components/common/Button";
 import ModalWrapper from "@/components/common/ModalWrapper";
 import products from "@/constant/siteInfo";
@@ -64,7 +65,7 @@ export default function HistoryPage() {
 
       <section className="flex flex-col gap-10 max-w-[600px] mx-auto">
         {
-          data?.map((item: any, i:any) => {
+        data.length> 0 ?  data?.map((item: any, i:any) => {
             return item?.OrderDetail?.map(({ activity, hasGivenReview }: any) => (
               <div key={activity.id} className="flex items-center gap-8 relative">
                 <img src={item.proofOfPayment} height={100} width={100} alt={`${activity.id} image`} className="object-cover h-[100px] w-[100px] rounded-2xl" />
@@ -80,7 +81,7 @@ export default function HistoryPage() {
                   setOpen(true)}}>Leave a review</button>}
               </div>
             ))
-          })
+          }) : <EmptyState />
         }
       </section>
 
