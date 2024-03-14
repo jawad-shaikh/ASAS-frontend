@@ -6,7 +6,7 @@ export const providerFormSchema = z.object({
     businessName: z.string().min(2, { message: 'Business Name must be at least 2 characters long' }),
     email: z.string().email({ message: 'Invalid email address' }),
     password: z.string().min(6, { message: 'Password must be at least 6 characters long' }),
-    website: z.string().optional(),
+    website: z.string().min(2, { message: 'Business Name must be at least 2 characters long' }),
     phoneNumber: z.string().min(10, { message: 'Phone Number must be at least 10 characters long' }),
 });
 

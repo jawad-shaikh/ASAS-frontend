@@ -4,6 +4,7 @@ import useAuthStore from "@/store";
 import { useLayoutEffect } from "react";
 import { redirect } from "next/navigation";
 import ProviderSideMenu from "@/components/ProviderSideMenu";
+import { Toaster } from "react-hot-toast";
 
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             </main>
           ) : null
         }
+                <Toaster />
       </body>
     </html>
   );
