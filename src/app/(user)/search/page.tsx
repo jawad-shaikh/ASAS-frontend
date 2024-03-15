@@ -13,6 +13,8 @@ import MultiRangeSlider from '@/components/filter/RangeFilter';
 
 const page = ({searchParams: {search, category}}: {searchParams: any}) => {
     const [searchValue, setSearch] = useState(decodeURIComponent(search || ""));
+    const [latitude, setLatitude] = useState<any>(0)
+    const [longitude, setLongitude] = useState<any>(0)
 
     const { ref, autocompleteRef } = usePlacesWidget({
         apiKey: 'AIzaSyALid_clJdG76KwqFhqa5qvNqRb8dTt-h8',
@@ -23,8 +25,8 @@ const page = ({searchParams: {search, category}}: {searchParams: any}) => {
             }
         },
         onPlaceSelected: (place) => {
-            console.log('lat', place.geometry?.location?.lat());
-            console.log('lng', place.geometry?.location?.lng());
+            setLatitude(place.geometry?.location?.lat());
+            setLongitude(place.geometry?.location?.lng());
             console.log("formattedAddress", place.formatted_address)
         }
     });
@@ -157,7 +159,9 @@ const page = ({searchParams: {search, category}}: {searchParams: any}) => {
                 bookingType: selectedBookingOptions.map(item => item.value),
                 months: selectedMonthOptions.length > 0 ? selectedMonthOptions.map(item => item.value) : [],
                 startTime: `${selectedTimeOptions.startTime.slice(0, 2)}`,
-                endTime: `${selectedTimeOptions.endTime.slice(0, 2)}`
+                endTime: `${selectedTimeOptions.endTime.slice(0, 2)}`,
+                latitude,
+                longitude
 
             });
             console.log(data.data)
@@ -177,8 +181,29 @@ const page = ({searchParams: {search, category}}: {searchParams: any}) => {
 
 
     useEffect(() => {
+        const getLocation = async () => {
+            if (navigator.geolocation) {
+              try {
+                const position = await navigator.geolocation.getCurrentPosition((pos) => {
+                    setLatitude(pos.coords.latitude)
+                    setLongitude(pos.coords.longitude);
+              
+
+
+                });
+              } catch (err: any) {
+                console.log(err.message);
+              }
+            } else {
+              console.log("Geolocation is not supported by this browser.");
+            }
+          };
+      
+          getLocation();
+    }, [])
+    useEffect(() => {
         getData()
-    }, [ageArr, selectedBookingOptions, selectedCategoryOptions, selectedMonthOptions, selectedTimeOptions, searchValue])
+    }, [ageArr, selectedBookingOptions, selectedCategoryOptions, selectedMonthOptions, selectedTimeOptions, searchValue, latitude, longitude])
 
     return (
         <>
