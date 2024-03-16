@@ -63,6 +63,7 @@ export const updateActivity = (id: any, data: any) => API.patch(`/activities/${i
 
 export const getReports = (user: any) => API.get(`/reports/${user}`);
 
+
 export const getAllActivity = (id: number) =>
   API.post(`/activities/fetch?activityProviderId=${id}`);
 

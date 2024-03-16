@@ -23,6 +23,7 @@
     "nextjs-toploader": "^1.6.6",
     "react": "^18",
     "react-dom": "^18",
+    "react-geocode": "^1.0.0-alpha.1",
     "react-google-autocomplete": "^2.7.3",
     "react-hook-form": "^7.50.1",
     "react-hot-toast": "^2.4.1",

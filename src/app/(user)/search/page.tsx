@@ -184,12 +184,17 @@ const page = ({searchParams: {search, category}}: {searchParams: any}) => {
         const getLocation = async () => {
             if (navigator.geolocation) {
               try {
-                const position = await navigator.geolocation.getCurrentPosition((pos) => {
+                const position = await navigator.geolocation.getCurrentPosition(async (pos) => {
                     setLatitude(pos.coords.latitude)
                     setLongitude(pos.coords.longitude);
-              
+                    const { data } = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${pos.coords.latitude}, ${pos.coords.longitude}&key=AIzaSyALid_clJdG76KwqFhqa5qvNqRb8dTt-h8`)
+                     
+                     if (ref && ref.current) {
+                        const inputRef = ref.current as HTMLInputElement;
 
-
+                        inputRef.value = data.results[0].formatted_address;
+                    }
+                   
                 });
               } catch (err: any) {
                 console.log(err.message);
@@ -260,12 +265,13 @@ const page = ({searchParams: {search, category}}: {searchParams: any}) => {
                         onGoogleApiLoaded={onGoogleApiLoaded}
                         onChange={(map) => console.log('Map moved', map)}
                     >
-                        {coordinates.map(({ lat, lng, name }, index) => (
+                        {coordinates.map(({ lat, lng, name, title }, index) => (
                             <Marker
                                 lat={lat}
                                 lng={lng}
                                 key={index}
                                 markerId={name}
+                                activity={title}
                                 onClick={onMarkerClick} // you need to manage this prop on your Marker component!
                                 draggable={false}
                             // onDragStart={(e, { latLng }) => {}}
