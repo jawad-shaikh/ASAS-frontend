@@ -6,7 +6,7 @@ const ReviewCard = ({review}: any) => {
     return (
         <div className='flex flex-col gap-4 mt-6'>
             <div className='flex items-center gap-4'>
-                <img src={review.parent.profilePicture} width={30} height={30} alt="user image" className='rounded-full h-[40px] w-[40px] object-cover' />
+                <img src={review.parent.profilePicture || "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg" } width={30} height={30} alt="user image" className='rounded-full h-[40px] w-[40px] object-cover' />
                 <h3 className='font-medium text-sm'>{review.parent.fullName}</h3>
             </div>
 

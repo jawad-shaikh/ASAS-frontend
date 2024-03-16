@@ -6,7 +6,7 @@ import FormInput from "@/components/common/FormInput";
 import { useRouter } from "next/navigation";
 import { LegacyRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { usePlacesWidget } from "react-google-autocomplete";
 
 
@@ -297,6 +297,7 @@ export default function NewActivityPage() {
           </div>
         </div>
       </form>
+      <Toaster />
     </div>
   );
 }
