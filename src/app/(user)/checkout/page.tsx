@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 
 
 export default function UserPage() {
-  const { items } = useCartStore();
+  const { items, clearCart } = useCartStore();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [image, setImage] = useState<string | null>(null);
@@ -61,6 +61,7 @@ export default function UserPage() {
         formData.append('orders', JSON.stringify(data));
         await createOrders(formData)
         toast.success("Checkout Successful", {id})
+        clearCart()
         window.localStorage.removeItem('cartItems')
         router.push('/explore')
       } else {

@@ -1,4 +1,4 @@
-  import React, { useState, useEffect } from 'react';
+  import React, { useState, useEffect, useRef } from 'react';
 
   interface Option {
     name: string;
@@ -15,7 +15,6 @@
   const CustomFilterButton: React.FC<CustomFilterButtonProps> = ({ name, options, onChange, active }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [tempSelectedOptions, setTempSelectedOptions] = useState<Option[]>([]);
-
 
     const handleToggleDropdown = () => {
       setIsOpen(!isOpen);
@@ -47,10 +46,24 @@
         setTempSelectedOptions([{name:active, value:active.toUpperCase()}]);
       }
     }, [])
-    
+
+    useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+        const current = document.getElementById(name);
+        console.log(current)
+        if (current && !current.contains(event.target as Node)) {
+          handleApplyFilter();
+        }
+      };
   
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, []);
+    
     return (
-      <div className="custom-filter-button relative">
+      <div className="custom-filter-button relative" id={name}>
         <button onClick={handleToggleDropdown} className={`px-6 py-2 text-sm font-medium rounded-full border ${isOpen || tempSelectedOptions.length > 0 ? "border-primary text-primary" : "border-black text-black"}`}>{name}</button>
         {isOpen && (
           <div className="absolute top-12 left-0 z-10 bg-white rounded-xl border p-4 max-w-max">

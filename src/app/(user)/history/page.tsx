@@ -75,10 +75,10 @@ export default function HistoryPage() {
                   <p className="font-medium my-1 text-sm">{formatDate(activity.activityStartDate)} - {formatDate(activity.activityEndDate)}</p>
                   {/* <p className="text-primary">Activity Schedule</p> */}
                 </div>
-                {(!hasGivenReview && item.isApproved === "APPROVE") && <button className="text-primary absolute top-4 right-4" onClick={() => {
+                {(!hasGivenReview && item.isApproved === "APPROVE") ? <button className="text-primary absolute top-4 right-4" onClick={() => {
                   setId(activity.id)
                   setOrderDetailId(item.id)
-                  setOpen(true)}}>Leave a review</button>}
+                  setOpen(true)}}>Leave a review</button> : <p className="text-primary absolute top-4 right-4" >Pending Approval</p>}
               </div>
             ))
           }) : <EmptyState />

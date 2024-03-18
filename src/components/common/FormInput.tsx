@@ -22,6 +22,11 @@ const FormInput: React.FC<InputProps> = ({
         {...register(name)}
         aria-invalid={errors[name] ? "true" : "false"}
       />
+      {errors[name] && (
+        <p className="text-red-500 text-xs italic">
+          {errors[name].message}
+        </p>
+      )}
     </div>
   );
 };

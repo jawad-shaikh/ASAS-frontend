@@ -10,6 +10,7 @@ import GoogleMap from 'google-maps-react-markers'
 import Marker from './Marker';
 import CustomAgeFilterButton from '@/components/filter/CustomAgeFilterButton';
 import MultiRangeSlider from '@/components/filter/RangeFilter';
+import EmptyState from '@/components/EmptyState';
 
 const page = ({searchParams: {search, category}}: {searchParams: any}) => {
     const [searchValue, setSearch] = useState(decodeURIComponent(search || ""));
@@ -126,12 +127,6 @@ const page = ({searchParams: {search, category}}: {searchParams: any}) => {
         console.log('Selected month options:', selectedOptions);
     };
 
-    // const handleDayChange = (selectedOptions: any[]) => {
-    //     setSelectedDayOptions(selectedOptions);
-    //     // Handle day filter change logic here
-    //     console.log('Selected day options:', selectedOptions);
-    // };
-
     const handleTimeChange = (selectedOptions: any) => {
         setSelectedTimeOptions(selectedOptions);
         // Handle time filter change logic here
@@ -164,10 +159,12 @@ const page = ({searchParams: {search, category}}: {searchParams: any}) => {
                 longitude
 
             });
-            console.log(data.data)
-            console.log(selectedCategoryOptions, "data")
+
+            if(mapRef && mapRef.current && data.data.coordinates.length){
+                mapRef.current.setCenter({lat: data.data.coordinates[0].lat, lng:data.data.coordinates[0].lng })
+            }
+
             setData(data.data.activities)
-            console.log(data.data.coordinates)
             setCoordinates(data.data.coordinates)
         } catch (error) {
             console.log(error)
@@ -187,6 +184,8 @@ const page = ({searchParams: {search, category}}: {searchParams: any}) => {
                 const position = await navigator.geolocation.getCurrentPosition(async (pos) => {
                     setLatitude(pos.coords.latitude)
                     setLongitude(pos.coords.longitude);
+                    mapRef.current.setCenter({lat: pos.coords.latitude, lng:pos.coords.longitude })
+
                     const { data } = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${pos.coords.latitude}, ${pos.coords.longitude}&key=AIzaSyALid_clJdG76KwqFhqa5qvNqRb8dTt-h8`)
                      
                      if (ref && ref.current) {
@@ -261,7 +260,7 @@ const page = ({searchParams: {search, category}}: {searchParams: any}) => {
                     <GoogleMap
                         apiKey="AIzaSyALid_clJdG76KwqFhqa5qvNqRb8dTt-h8"
                         defaultCenter={{ lat: 25.1934586, lng: 66.8258065 }}
-                        defaultZoom={6}
+                        defaultZoom={10}
                         options={mapOptions}
                         mapMinHeight="400px"
                         onGoogleApiLoaded={onGoogleApiLoaded}
@@ -286,7 +285,7 @@ const page = ({searchParams: {search, category}}: {searchParams: any}) => {
 
                 <section className='flex flex-col gap-8 mt-8'>
                     {
-                        data.map((item: any) => (
+                       data.length > 0 ? data.map((item: any) => (
                             <Link key={item} href={`/${item.id}`} className="flex md:flex-row flex-col items-start gap-4 bg-white border overflow-hidden rounded-xl">
                                 <img src={item.thumbnailPicture} className='w-full md:max-w-[400px] h-full object-cover' />
                                 <div className='w-full p-4'>
@@ -303,7 +302,7 @@ const page = ({searchParams: {search, category}}: {searchParams: any}) => {
                                     <p className='mt-4'><span className='text-primary font-semibold text-lg'>${item.singleSessionPrice ? item.singleSessionPrice : item.fullCoursePrice}</span> SAR/Month</p>
                                 </div>
                             </Link>
-                        ))
+                        )): <EmptyState />
                     }
                 </section>
 

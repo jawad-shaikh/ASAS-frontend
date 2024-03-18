@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface CustomAgeFilterButtonProps {
   name: string;
@@ -11,6 +11,8 @@ const CustomAgeFilterButton: React.FC<CustomAgeFilterButtonProps> = ({ name, onC
   const [tempSelectedYears, setTempSelectedYears] = useState<number[]>([]);
   const ageRanges = ["0-3", "3-6", "6-9", "9-12", "12-18", "18-24"];
   const maxAge = 16;
+  const filterRef = useRef<HTMLDivElement>(null);
+
 
   const handleToggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -49,8 +51,22 @@ const CustomAgeFilterButton: React.FC<CustomAgeFilterButtonProps> = ({ name, onC
     setIsOpen(false);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      console.log(filterRef.current)
+      if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
+        handleApplyFilter();
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [handleApplyFilter]);
+
   return (
-    <div className="custom-filter-button relative">
+    <div className="custom-filter-button relative" ref={filterRef}>
       <button onClick={handleToggleDropdown} className={`px-6 py-2 text-sm font-medium rounded-full border ${isOpen || tempSelectedMonths.length > 0 || tempSelectedYears.length > 0 ? "border-primary text-primary" : "border-black text-black"}`}>{name}</button>
       {isOpen && (
         <div className="absolute top-12 left-0 z-10 bg-white rounded-xl border p-4 max-w-max">

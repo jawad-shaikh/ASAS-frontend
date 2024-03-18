@@ -9,6 +9,8 @@ const CustomAgeFilterButton: React.FC<any> = ({ name, onChange }) => {
   const minValRef = useRef<HTMLInputElement>(null);
   const maxValRef = useRef<HTMLInputElement>(null);
   const range = useRef<HTMLDivElement>(null);
+  const filterRef = useRef<HTMLDivElement>(null);
+
 
   const handleToggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -36,9 +38,22 @@ const CustomAgeFilterButton: React.FC<any> = ({ name, onChange }) => {
     setIsOpen(false);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
+        setIsOpen(false)
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="custom-filter-button relative">
-      <button onClick={handleToggleDropdown} className={`px-6 py-2 text-sm font-medium rounded-full border ${isOpen ? "border-primary text-primary" : "border-black text-black"}`}>{name}</button>
+    <div className="custom-filter-button relative" ref={filterRef}>
+      <button onClick={handleToggleDropdown} className={`px-6 py-2 text-sm font-medium rounded-full border ${isOpen || selectedTimeRange.startTime !== "00:00:00" || selectedTimeRange.endTime !== "24:00:00" ? "border-primary text-primary" : "border-black text-black"}`}>{name}</button>
       {isOpen && (
         <div className="absolute top-12 left-0 z-10 bg-white rounded-xl border p-4 max-w-max">
           <div className="w-full">

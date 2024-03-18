@@ -94,7 +94,10 @@ const CartAside = ({
     }, [])
 
     useEffect(() => {
-        setPrice(calculateItemPrices([{ bookingType: bookingOption, attendeeIds: tempSelectedOptions, sessionDates: selectedDates, activity: product }])[0]);
+        if(bookingOption){
+            setPrice(calculateItemPrices([{ bookingType: bookingOption, attendeeIds: tempSelectedOptions, sessionDates: selectedDates, activity: product }])[0]);
+
+        }
     }, [bookingOption, selectedDates, tempSelectedOptions])
     
 
@@ -104,7 +107,6 @@ const CartAside = ({
         setTempSelectedOptions([])
     }, [children])
     
-    console.log(bookingOption)
     return (
         <>
             <div className="bg-white rounded-xl p-6 flex flex-col gap-4 divide-y">
@@ -167,8 +169,9 @@ const CartAside = ({
                                             name="bookingOption"
                                             value="FULL_COURSE"
                                             id="FULL_COURSE"
-                                            className="size-5 border-primary text-primary"
+                                            className="size-5 disabled:border-gray-400 border-primary text-primary"
                                             checked={bookingOption === "FULL_COURSE"}
+                                            disabled={children.length<1 || tempSelectedOptions.length <1}
                                             onChange={(e: any) => setBookingOption(e.target.value)}
                                         />
                                         <div>
@@ -191,8 +194,9 @@ const CartAside = ({
                                             name="bookingOption"
                                             value="SINGLE_SESSION"
                                             id="SINGLE_SESSION"
-                                            className="size-5 border-primary text-primary"
+                                            className="size-5 disabled:border-gray-400 border-primary text-primary"
                                             checked={bookingOption === "SINGLE_SESSION"}
+                                            disabled={children.length<1 || tempSelectedOptions.length <1}
                                             onChange={(e: any) => setBookingOption(e.target.value)}
                                         />
                                         <div>
@@ -233,8 +237,14 @@ const CartAside = ({
                         toast.error("Please Login");
 
                     }
+                    else if (children.length < 1){
+                        toast.error("Please add children");
+                    }
+                    else if (tempSelectedOptions.length < 1){
+                        toast.error("Please select a child");
+                    }
                     else if (price === 0) {
-                        toast.error("Please select a options");
+                        toast.error("Please select a booking option");
                     }
                     else {
                         addToCart(product, bookingOption, tempSelectedOptions, selectedDates)

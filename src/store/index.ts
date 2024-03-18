@@ -62,6 +62,7 @@ interface CartState {
     sessionDates?: string[]
   ) => void;
   removeFromCart: (activityId: number) => void;
+  clearCart: () => void;
 }
 
 export const useCartStore = create<CartState>((set) => {
@@ -108,6 +109,9 @@ export const useCartStore = create<CartState>((set) => {
         localStorage.setItem("cartItems", JSON.stringify(updatedItems));
         return { items: updatedItems };
       }),
+    clearCart: () => {
+      set({items: []})
+    }
   };
 });
 

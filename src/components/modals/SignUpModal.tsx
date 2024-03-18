@@ -46,7 +46,7 @@ const SignUpModal = () => {
         } catch (error: any) {
             // An error occurred during registration
             console.error('An error occurred during registration:', error);
-            toast.error("There is an issue, please try again", { id: loadingToastId });
+            toast.error(error.response.data.error, { id: loadingToastId });
 
         }
 
