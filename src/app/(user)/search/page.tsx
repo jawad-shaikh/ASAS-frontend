@@ -264,7 +264,7 @@ const page = ({searchParams: {search, category}}: {searchParams: any}) => {
                     <GoogleMap
                         apiKey="AIzaSyALid_clJdG76KwqFhqa5qvNqRb8dTt-h8"
                         defaultCenter={{ lat: 25.1934586, lng: 66.8258065 }}
-                        defaultZoom={12}
+                        defaultZoom={10}
                         options={mapOptions}
                         mapMinHeight="400px"
                         onGoogleApiLoaded={onGoogleApiLoaded}
