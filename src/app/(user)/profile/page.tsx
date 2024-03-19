@@ -77,6 +77,8 @@ const {updateUser} = useAuthStore()
   }, [])
 
   return (
+    <>
+    <title>My Family Profile | ASAS Parent Portal</title>
     <main className="bg-light-gray relative px-4 py-12">
       <div className="container bg-white py-20">
       <form className=" max-w-2xl mx-auto px-6" onSubmit={handleSubmit(onSubmit)}>
@@ -141,5 +143,6 @@ const {updateUser} = useAuthStore()
       </div>
       <Child />
     </main>
+    </>
   );
 }

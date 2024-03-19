@@ -20,6 +20,9 @@ console.log(organizedData, data)
 
   return (
     <>
+    <title>
+    Discover Top Activities for Kids | ASAS
+    </title>
       <main className="bg-gray pb-10 sm:pb-20 md:pb-[104px]">
         <Hero />
         {organizedData ? (

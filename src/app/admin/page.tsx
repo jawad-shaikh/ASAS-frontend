@@ -16,6 +16,11 @@ export default function AdminPage() {
   }, [])
   
   return (
+    <>
+    <title>
+    Dashboard | ASAS Admin Portal
+
+    </title>
     <div className="px-8">
     <TableHeader title="Dashboard" />
     <div className="grid grid-cols-5 gap-4">
@@ -40,5 +45,7 @@ export default function AdminPage() {
       </div>
     </div>
   </div>
+  </>
+
   );
 }

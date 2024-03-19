@@ -12,6 +12,10 @@ export default function UserPage() {
   const router = useRouter();
 
   return (
+    <>
+    <title>
+    Cart | ASAS
+    </title>
     <main className="bg-light-gray relative py-20">
       <div className="container">
         <h1 className='text-3xl font-medium text-center'>Cart</h1>
@@ -116,5 +120,7 @@ export default function UserPage() {
 
       </div>
     </main>
+    </>
+
   );
 }

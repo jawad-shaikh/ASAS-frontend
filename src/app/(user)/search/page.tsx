@@ -26,6 +26,8 @@ const page = ({searchParams: {search, category}}: {searchParams: any}) => {
             }
         },
         onPlaceSelected: (place) => {
+            mapRef.current.setCenter({ lat:place.geometry?.location?.lat(), lng:place.geometry?.location?.lng() })
+
             setLatitude(place.geometry?.location?.lat());
             setLongitude(place.geometry?.location?.lng());
             console.log("formattedAddress", place.formatted_address)
@@ -98,7 +100,6 @@ const page = ({searchParams: {search, category}}: {searchParams: any}) => {
         console.log('This is ->', markerId)
 
         // inside the map instance you can call any google maps method
-        mapRef.current.setCenter({ lat, lng })
         // ref. https://developers.google.com/maps/documentation/javascript/reference?hl=it
     }
 
@@ -211,6 +212,9 @@ const page = ({searchParams: {search, category}}: {searchParams: any}) => {
 
     return (
         <>
+        <title>
+        Activities for Kids near you | ASAS
+        </title>
             <main className='container py-12'>
                 <div className='flex items-end gap-4 flex-wrap'>
                     <div className='grid grid-cols-1 gap-4'>
@@ -260,7 +264,7 @@ const page = ({searchParams: {search, category}}: {searchParams: any}) => {
                     <GoogleMap
                         apiKey="AIzaSyALid_clJdG76KwqFhqa5qvNqRb8dTt-h8"
                         defaultCenter={{ lat: 25.1934586, lng: 66.8258065 }}
-                        defaultZoom={10}
+                        defaultZoom={12}
                         options={mapOptions}
                         mapMinHeight="400px"
                         onGoogleApiLoaded={onGoogleApiLoaded}

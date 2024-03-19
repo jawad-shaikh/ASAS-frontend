@@ -9,18 +9,21 @@ import robots from "@/assets/robots.svg"
 import language from "@/assets/language.svg"
 import music from "@/assets/music.svg"
 import sports from "@/assets/sports.svg"
-import { useModalStore } from '@/store'
+import useAuthStore, { useModalStore } from '@/store'
 import Link from 'next/link'
 
 const Hero = () => {
   const {setSignUpOpen} = useModalStore()
+  const {isAuthenticated} = useAuthStore();
   return (
     <section className="bg-[#FBF7F0] relative overflow-y-hidden">
     <div className="container pb-[150px] pt-[100px]">
       <h1 className="text-3xl md:text-[40px] max-w-[932px] text-center mx-auto md:leading-normal">Discover <span className="text-green">After-School</span> Activities
         in your neighbourhood.</h1>
       <div className="flex items-center justify-center gap-6 mt-8">
-        <Button onClick={() => setSignUpOpen(true)} size={"medium"}>Get Started</Button>
+       {
+        !isAuthenticated && <Button onClick={() => setSignUpOpen(true)} size={"medium"}>Get Started</Button>
+       }
       </div>
       <BannerSearch />
       <div className="mt-14 text-center flex flex-wrap items-start justify-center gap-20">

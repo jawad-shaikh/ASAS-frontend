@@ -3,15 +3,19 @@ import ReviewSlider from "@/components/ReviewSlider";
 import Button from "@/components/common/Button";
 import Footer from "@/components/common/Footer";
 import UserNavbar from "@/components/common/UserNavbar";
-import { useModalStore } from "@/store";
+import useAuthStore, { useModalStore } from "@/store";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 export default function LandingPage() {
   const router = useRouter()
   const {setSignUpOpen} = useModalStore();
+  const {isAuthenticated} = useAuthStore();
   return (
     <>
+    <title>
+    Unleash Your Child's Potential with ASAS | Fun and Learning Await
+    </title>
       <UserNavbar />
 
       <main>
@@ -22,7 +26,11 @@ export default function LandingPage() {
             <p className="max-w-[794px] text-center mx-auto mt-8">At ASAS, we understand the importance of personalized and accessible education for your child. Explore a world of enriching learning opportunities right in your community.</p>
             <div className="flex items-center justify-center gap-6 mt-8">
               <Button onClick={() => router.push('/explore')} size={"medium"} variant={"outline"}>Explore</Button>
-              <Button onClick={() => setSignUpOpen(true)} size={"medium"}>Get Started</Button>
+             
+              {
+        !isAuthenticated && <Button onClick={() => setSignUpOpen(true)} size={"medium"}>Get Started</Button>
+       }
+              
             </div>
             <Image src="/preview.png" width={1156} height={666} alt="Banner Image" className="top-20 w-full relative" />
           </div>

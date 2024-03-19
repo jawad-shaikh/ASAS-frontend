@@ -60,6 +60,10 @@ export default function HistoryPage() {
   }, []);
 
   return (
+    <>
+    <title>
+    Order History | ASAS Parent Portal
+    </title>
     <main className="container pb-10 sm:pb-20 md:pb-[104px]">
       <h1 className="font-medium text-3xl text-center my-12">Order History</h1>
 
@@ -78,7 +82,7 @@ export default function HistoryPage() {
                 {(!hasGivenReview && item.isApproved === "APPROVE") ? <button className="text-primary absolute top-4 right-4" onClick={() => {
                   setId(activity.id)
                   setOrderDetailId(item.id)
-                  setOpen(true)}}>Leave a review</button> : <p className="text-primary absolute top-4 right-4" >Pending Approval</p>}
+                  setOpen(true)}}>Leave a review</button> : item.isApproved !== "APPROVE" ? <p className="text-primary absolute top-4 right-4" >Pending Approval</p> : null}
               </div>
             ))
           }) : <EmptyState />
@@ -115,5 +119,7 @@ export default function HistoryPage() {
         </div>
       </ModalWrapper>
     </main>
+    </>
+
   );
 }

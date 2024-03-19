@@ -3,15 +3,27 @@ import ReviewCard from "@/components/ReviewCard";
 import { Icon } from "@/components/common/Icons";
 import { formatDate, formatTime } from "@/utils/helper";
 import axios from "axios";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Fragment } from "react";
+
+
+const getData = async (id:number) => {
+  const res = await axios.get(`${process.env.NEXT_PUBLIC_URL}/api/v1/activities/${id}`);
+  return res
+}
+
+export async function generateMetadata({ params }: any) {
+  const { data } = await getData(params.detail)
+  return {
+    title: `${data.data.title} | ASAS`,
+  }
+}
 
 
 export default async function UserPage({ params }: any) {
   let res = null;
   try {
-    const { data } = await axios.get(`${process.env.NEXT_PUBLIC_URL}/api/v1/activities/${params.detail}`)
+    const { data } = await getData(params.detail)
     res = data.data
 
   } catch (error: any) {
@@ -22,10 +34,10 @@ export default async function UserPage({ params }: any) {
 
 
   const { id, thumbnailPicture, title, description,capacity, averageRating, numberOfRatings, ActivityReview, ageRangeStart, ageRangeEnd, activityStartDate, activityEndDate, activityStartTime, activityEndTime,
-    isFullCourse, isSingleSession, fullCoursePrice, singleSessionPrice} = res;
+    formattedAddress,isFullCourse, isSingleSession, fullCoursePrice, singleSessionPrice} = res;
 
-  console.log(res)
   return (
+    <>
     <main className="bg-light-gray relative py-20">
       <div className="container">
         <h1 className='text-3xl font-medium text-center'>{title}</h1>
@@ -60,7 +72,7 @@ export default async function UserPage({ params }: any) {
                   <div>
                     <div className="my-4">
                       <p className="font-thin mb-2">Location</p>
-                      <p className="font-medium">Online</p>
+                      <p className="font-medium">{formattedAddress}</p>
                     </div>
 
                     <div className="my-4">
@@ -130,7 +142,7 @@ export default async function UserPage({ params }: any) {
                     <Icon.star />
                     <Icon.star />
                   </div>
-                  <p className="font-thin text-sm">{averageRating} out of {numberOfRatings}</p>
+                  <p className="font-thin text-sm">{averageRating} out of 5</p>
                 </div>
 
                 {
@@ -154,5 +166,7 @@ export default async function UserPage({ params }: any) {
         </div>
       </div>
     </main>
+    </>
+
   );
 }

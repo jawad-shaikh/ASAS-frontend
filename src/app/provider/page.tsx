@@ -10,6 +10,9 @@ import Link from "next/link";
 export default function ProviderPage() {
   return (
     <>
+    <title>
+    Register Now: Expand Your Impact with ASAS | Reach More Kids
+    </title>
       <UserNavbar />
       <main className="bg-gray pb-10 sm:pb-20 md:pb-[104px]">
         <Hero />
