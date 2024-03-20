@@ -7,6 +7,21 @@
   .container {
     @apply max-w-7xl mx-auto px-4
   }
+  .description h1,
+  .description h2,
+  .description h3,
+  .description h4,
+  .description h5,
+  .description h6,
+  .description p {
+    @apply mb-4
+  }
+  .description ul{
+    @apply list-inside list-disc
+  }
+  .description ol{
+    @apply list-inside list-decimal
+  }
 }
 
 .rmdp-week-day {

@@ -3,15 +3,17 @@ import { createActivity, createOrders, getActivity, updateActivity } from "@/api
 import TableHeader from "@/components/TableHeader";
 import Button from "@/components/common/Button";
 import FormInput from "@/components/common/FormInput";
-import { providerAccountFormSchema } from "@/validations";
-import { zodResolver } from "@hookform/resolvers/zod";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 // import { Autocomplete, useLoadScript } from "@react-google-maps/api";
 import { LegacyRef, useEffect, useState } from "react";
 import { usePlacesWidget } from "react-google-autocomplete";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import ReactQuill from 'react-quill';
+const ReactQuill = dynamic(() => import('react-quill'), {
+  loading: () => <p>Loading...</p>,
+  ssr:false
+})
 import 'react-quill/dist/quill.snow.css';
 
 export default function NewActivityPage({ params }: any) {
