@@ -8,7 +8,11 @@ import { LegacyRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { usePlacesWidget } from "react-google-autocomplete";
-import ReactQuill from 'react-quill';
+import dynamic from 'next/dynamic'
+const ReactQuill = dynamic(() => import('react-quill'), {
+  loading: () => <p>Loading...</p>,
+  ssr:false
+})
 import 'react-quill/dist/quill.snow.css';
 
 export default function NewActivityPage() {
