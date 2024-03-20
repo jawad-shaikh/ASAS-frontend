@@ -86,7 +86,7 @@ export default async function UserPage({ params }: any) {
 
               <div>
                 <h2 className="font-medium my-4">Description</h2>
-                <p>{description}</p>
+                <div className="mb-4" dangerouslySetInnerHTML={{ __html: JSON.parse(description) }} />
                 {/* <h3 className="text-sm font-medium">6 Lessons</h3>
 
                 <ol className="list-decimal list-inside my-4 font-thin text-sm space-y-1">

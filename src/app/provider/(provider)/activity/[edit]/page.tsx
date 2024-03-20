@@ -11,6 +11,8 @@ import { LegacyRef, useEffect, useState } from "react";
 import { usePlacesWidget } from "react-google-autocomplete";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 export default function NewActivityPage({ params }: any) {
 
@@ -32,6 +34,7 @@ export default function NewActivityPage({ params }: any) {
 
   const [data, setData] = useState<any>();
 
+  const [value, setEditor] = useState("");
 
   const [isFullCourse, setIsFullCourse] = useState(false);
   const [isSingleSession, setIsSingleSession] = useState(false);
@@ -66,6 +69,14 @@ export default function NewActivityPage({ params }: any) {
           console.log(key, value)
           formData.append(key, value?.toString() || "");
         }
+      }
+
+      if(JSON.stringify(value)){
+        formData.append("description", JSON.stringify(value));
+
+      }else {
+        toast.error("Please add description");
+        return null;
       }
 
       formData.append("isFullCourse", isFullCourse.toString());
@@ -126,7 +137,6 @@ export default function NewActivityPage({ params }: any) {
     if (data) {
       const keysToSet = [
         "title",
-        "description",
         "category",
         "capacity",
         "ageRangeStart",
@@ -140,7 +150,7 @@ export default function NewActivityPage({ params }: any) {
         console.log(key, data[key])
         setValue(key, data[key]);
       });
-
+      setEditor(JSON.parse(data.description) || "")
       const formattedAddressInput = document.getElementById('formattedAddress') as HTMLInputElement | null;
       if (formattedAddressInput) {
         formattedAddressInput.value = getValues('formattedAddress') || "";
@@ -190,13 +200,8 @@ export default function NewActivityPage({ params }: any) {
             <label className="sr-only block mb-2 text-sm" htmlFor={'description'}>
             Description
             </label>
-            <textarea
-              id={'description'}
-              className={`block bg-transparent border-b w-full pb-2 outline-none ${errors['description'] ? "border-red-500" : "border-border"}`}
-              placeholder={'Description'}
-              {...register('description')}
-              aria-invalid={errors['description'] ? "true" : "false"}
-            />
+            <ReactQuill theme="snow" value={value} onChange={setEditor} />
+
           </div>
           <select
             id="category"

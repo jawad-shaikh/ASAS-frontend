@@ -42,13 +42,6 @@ export default function ActivityPage() {
       header: "Date",
     }),
     columnHelper.accessor(
-      (row) => (row.description ? `${row.description}`.substring(0, 24) + "..." : "-"),
-      {
-        id: "description",
-        header: "Description",
-      }
-    ),
-    columnHelper.accessor(
       (row) => (`${(row.isFullCourse && row.isSingleSession) ? "Full Course / Single Session" : !row.isFullCourse ? "Single Session" : "Full Course"}`),
       {
         id: "bookingOption",

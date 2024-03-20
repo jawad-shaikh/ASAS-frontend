@@ -8,7 +8,8 @@ import { LegacyRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { usePlacesWidget } from "react-google-autocomplete";
-
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 export default function NewActivityPage() {
 
@@ -36,6 +37,8 @@ export default function NewActivityPage() {
     setValue,
   } = useForm<any>();
 
+    const [value, setEditor] = useState("");
+
   const [isFullCourse, setIsFullCourse] = useState(false);
   const [isSingleSession, setIsSingleSession] = useState(false);
 
@@ -57,10 +60,18 @@ export default function NewActivityPage() {
         } else if (key === "thumbnail") {
           // Append image file
           formData.append("thumbnail", data.thumbnail[0]);
-        } else if (key !== "fullCoursePrice" && key !== "singleSessionPrice") {
+        }
+         else if (key !== "fullCoursePrice" && key !== "singleSessionPrice") {
           console.log(key, value)
           formData.append(key, value?.toString() || "");
         }
+      }
+      if(JSON.stringify(value)){
+        formData.append("description", JSON.stringify(value));
+
+      }else {
+        toast.error("Please add description");
+        return null;
       }
 
       formData.append("isFullCourse", isFullCourse.toString());
@@ -121,15 +132,9 @@ export default function NewActivityPage() {
             <label className="sr-only block mb-2 text-sm" htmlFor={'description'}>
             Description
             </label>
-            <textarea
-              id={'description'}
-              className={`block bg-transparent border-b w-full pb-2 outline-none ${errors['description'] ? "border-red-500" : "border-border"}`}
-              placeholder={'Description'}
-              {...register('description')}
-              aria-invalid={errors['description'] ? "true" : "false"}
-            />
-          </div>
+            <ReactQuill theme="snow" value={value} onChange={setEditor} />
 
+          </div>
           <select
             id="category"
             className={`mt-7 block bg-transparent border-b w-full pb-2 outline-none ${errors['category'] ? "border-red-500" : "border-border"}`}
