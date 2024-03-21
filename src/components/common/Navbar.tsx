@@ -22,7 +22,7 @@ const Navbar = ({ user }: any) => {
       <button className="border border-border rounded-2xl flex items-center gap-4 px-4 py-2">
         {user?.profilePicture ? (
           <img
-            src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg"
+            src="https://i.pinimg.com/474x/0c/3b/3a/0c3b3adb1a7530892e55ef36d3be6cb8.jpg"
             height={30}
             width={30}
             alt="logo"

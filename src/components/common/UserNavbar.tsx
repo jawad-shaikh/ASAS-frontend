@@ -58,7 +58,7 @@ const UserNavbar = () => {
               <img
                 src={
                   user?.profilePicture ||
-                  "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg"
+                  "https://i.pinimg.com/474x/0c/3b/3a/0c3b3adb1a7530892e55ef36d3be6cb8.jpg"
                 }
                 height={30}
                 width={30}
