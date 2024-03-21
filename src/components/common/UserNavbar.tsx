@@ -80,7 +80,7 @@ const UserNavbar = () => {
               </svg>
 
               <ul className="border-border border w-full group-hover:flex hidden absolute top-12 right-0 bg-white p-4 text-left text-sm rounded-lg z-10  flex-col gap-2">
-                {user?.role === "PARENT" && (
+                {user?.role === "PARENT" ? (
                   <>
                     <li>
                       <Link
@@ -99,7 +99,23 @@ const UserNavbar = () => {
                       </Link>
                     </li>
                   </>
-                )}
+                ) : user?.role === "ADMIN" ? <li>
+                <Link
+                  className="flex justify-start w-full"
+                  href="/admin"
+                >
+                  Dashboard
+                </Link>
+              </li>: 
+              <li>
+              <Link
+                className="flex justify-start w-full"
+                href="/provider/dashboard"
+              >
+                Dashboard
+              </Link>
+            </li>
+              }
                 <li>
                   <button
                     className="flex justify-start w-full"
