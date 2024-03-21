@@ -1,61 +1,84 @@
+"use client";
 import ProductSlider from "@/components/ProductSlider";
+
 import Hero from "@/components/common/Hero";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
-export default async function UserPage() {
-  const organizedData = {} as any;
-  const { data } = await axios.post(
-    `${process.env.NEXT_PUBLIC_URL}/api/v1/activities/fetch`
-  );
+export default function UserPage() {
+  const [data, setData] = useState({} as any);
 
-  
-  data.data.activities.forEach((item: any) => {
-    if (!organizedData[item.category]) {
-      organizedData[item.category] = [];
+  const fetchData = async(location : any) => {
+    const organizedData = {} as any;
+    const { data } = await axios.post(
+      `${process.env.NEXT_PUBLIC_URL}/api/v1/activities/fetch`, location
+    );
+
+    data.data.activities.forEach((item: any) => {
+      if (!organizedData[item.category]) {
+        organizedData[item.category] = [];
+      }
+      organizedData[item.category].push(item);
+    });
+
+    setData(organizedData)
+  };
+
+  const getLocation = async () => {
+    if (navigator.geolocation) {
+      try {
+        const position = await navigator.geolocation.getCurrentPosition(async (pos) => {
+            fetchData({latitude: pos.coords.latitude, longitude: pos.coords.longitude});
+           
+        });
+      } catch (err: any) {
+        console.log(err.message);
+      }
+    } else {
+      console.log("Geolocation is not supported by this browser.");
     }
-    organizedData[item.category].push(item);
-  });
+  };
 
-console.log(organizedData, data)
+  useEffect(() => {
+    getLocation()
+  }, []);
 
   return (
     <>
-    <title>
-    Discover Top Activities for Kids | ASAS
-    </title>
+      <title>Discover Top Activities for Kids | ASAS</title>
       <main className="bg-gray pb-10 sm:pb-20 md:pb-[104px]">
         <Hero />
-        {organizedData ? (
+        {data ? (
           <>
             <ProductSlider
               title="Art Activities"
               description="Get creative with art classes at home"
-              products={organizedData.ART}
+              products={data.ART}
             />
             <ProductSlider
               title="Cooking Activities"
               description="Explore new passions with free classes"
-              products={organizedData.COOKING}
+              products={data.COOKING}
             />
             <ProductSlider
               title="Robot Activities"
               description="Drop-in online classes for the whole family"
-              products={organizedData.ROBOTS}
+              products={data.ROBOTS}
             />
             <ProductSlider
               title="Music Activities"
               description="Drop-in online classes for the whole family"
-              products={organizedData.MUSIC}
+              products={data.MUSIC}
             />
             <ProductSlider
               title="Language Activities"
               description="Drop-in online classes for the whole family"
-              products={organizedData.LANGUAGE}
+              products={data.LANGUAGE}
             />
             <ProductSlider
               title="Sports Activities"
               description="Drop-in online classes for the whole family"
-              products={organizedData.SPORTS}
+              products={data.SPORTS}
             />
           </>
         ) : null}

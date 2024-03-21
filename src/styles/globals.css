@@ -138,3 +138,6 @@ input[type='radio'] {
   background-size: cover;
 }
 
+.ql-editor {
+  min-height: 20rem;
+}
