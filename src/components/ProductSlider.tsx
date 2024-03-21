@@ -29,7 +29,7 @@ const ProductSlider: React.FC<{
           slidesPerView={5}
           spaceBetween={24}
           navigation={true}
-          centeredSlides={true}
+          // centeredSlides={true}
           // initialSlide={4}
 
           loop={true}

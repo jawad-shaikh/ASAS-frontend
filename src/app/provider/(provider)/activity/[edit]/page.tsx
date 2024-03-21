@@ -144,6 +144,8 @@ export default function NewActivityPage({ params }: any) {
         "ageRangeStart",
         "ageRangeEnd",
         "formattedAddress",
+        'lat',
+        "lng",
         "fullCoursePrice",
         "singleSessionPrice"
       ];
