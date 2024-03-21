@@ -35,7 +35,7 @@ export default async function UserPage({ params }: any) {
 
   const { id, thumbnailPicture, title, description,capacity, averageRating, numberOfRatings, ActivityReview, ageRangeStart, ageRangeEnd, activityStartDate, activityEndDate, activityStartTime, activityEndTime,
     formattedAddress,isFullCourse, isSingleSession, fullCoursePrice, singleSessionPrice} = res;
-
+    console.log(ActivityReview)
   return (
     <>
     <main className="bg-light-gray relative py-20">
@@ -136,11 +136,9 @@ export default async function UserPage({ params }: any) {
                 <h2 className="font-medium my-4">Reviews</h2>
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-1">
-                    <Icon.star />
-                    <Icon.star />
-                    <Icon.star />
-                    <Icon.star />
-                    <Icon.star />
+                  {[...Array(Math.round(averageRating))].map((_, index) => (
+            <Icon.star key={index} />
+        ))}
                   </div>
                   <p className="font-thin text-sm">{averageRating} out of 5</p>
                 </div>

@@ -50,9 +50,8 @@
     useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
         const current = document.getElementById(name);
-        console.log(current)
         if (current && !current.contains(event.target as Node)) {
-          handleApplyFilter();
+          if (isOpen) handleApplyFilter();
         }
       };
   

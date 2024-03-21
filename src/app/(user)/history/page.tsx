@@ -64,7 +64,7 @@ export default function HistoryPage() {
     <title>
     Order History | ASAS Parent Portal
     </title>
-    <main className="container pb-10 sm:pb-20 md:pb-[104px]">
+    <main className="container pb-10 sm:pb-20 md:pb-[104px] min-h-[30rem]">
       <h1 className="font-medium text-3xl text-center my-12">Order History</h1>
 
       <section className="flex flex-col gap-10 max-w-[600px] mx-auto">
