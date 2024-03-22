@@ -22,7 +22,7 @@ const page = ({searchParams: {search, category}}: {searchParams: any}) => {
         options:{
             types: ['school','drugstore','neighborhood', 'locality', 'sublocality'],
             componentRestrictions: {
-                country: 'pk'
+                country: 'ae'
             }
         },
         onPlaceSelected: (place) => {
