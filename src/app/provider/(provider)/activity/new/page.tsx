@@ -22,7 +22,7 @@ export default function NewActivityPage() {
     options:{
       types: ['school','drugstore','neighborhood', 'locality', 'sublocality'],
       componentRestrictions: {
-          country: 'pk'
+          country: 'ae'
       }
   },
     onPlaceSelected: (place) => {

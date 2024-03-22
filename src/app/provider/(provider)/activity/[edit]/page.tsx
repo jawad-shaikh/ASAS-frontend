@@ -24,7 +24,7 @@ export default function NewActivityPage({ params }: any) {
     options:{
       types: ['school','drugstore','neighborhood', 'locality', 'sublocality'],
       componentRestrictions: {
-          country: 'pk'
+          country: 'ae'
       }
   },
     onPlaceSelected: (place) => {

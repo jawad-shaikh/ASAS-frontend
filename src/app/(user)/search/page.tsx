@@ -22,7 +22,7 @@ const page = ({searchParams: {search, category}}: {searchParams: any}) => {
         options:{
             types: ['school','drugstore','neighborhood', 'locality', 'sublocality'],
             componentRestrictions: {
-                country: 'pk'
+                country: 'ae'
             }
         },
         onPlaceSelected: (place) => {
@@ -263,7 +263,7 @@ const page = ({searchParams: {search, category}}: {searchParams: any}) => {
                 <section className='mt-8'>
                     <GoogleMap
                         apiKey="AIzaSyALid_clJdG76KwqFhqa5qvNqRb8dTt-h8"
-                        defaultCenter={{ lat: 25.1934586, lng: 66.8258065 }}
+                        defaultCenter={{ lat: 24.7155288, lng: 46.4870344 }}
                         defaultZoom={10}
                         options={mapOptions}
                         mapMinHeight="400px"
