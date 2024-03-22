@@ -34,7 +34,7 @@ const useAuthStore = create<AuthState>((set) => {
     logout: () => {
       localStorage.removeItem("token");
       localStorage.removeItem("userData");
-      window.location.assign("http://89.116.33.124:5449");
+      window.location.assign("https://asas.mchd-manager.com");
       set({ isAuthenticated: false, user: null });
     },
     updateUser: (userData: User) => {
@@ -110,8 +110,8 @@ export const useCartStore = create<CartState>((set) => {
         return { items: updatedItems };
       }),
     clearCart: () => {
-      set({items: []})
-    }
+      set({ items: [] });
+    },
   };
 });
 
